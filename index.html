@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoiceYour KB — деловая коммуникация SSJ100</title>
+<style>
+:root {
+  --bg: #FAF8F5;
+  --card: #FFFFFF;
+  --text: #2C2A28;
+  --text-muted: #5C5854;
+  --accent: #6B5B95;
+  --accent-light: #8B7EC8;
+  --accent-soft: #EDE9F5;
+  --gold: #C4A574;
+  --border: #E8E4DE;
+  --success: #4A7C59;
+  --warning: #B8860B;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(107, 91, 149, 0.08);
+  --font-base: 18px;
+  --nav-h: 64px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+  padding-bottom: calc(var(--nav-h) + 16px);
+}
+body.large-text { --font-base: 22px; }
+body.high-contrast {
+  --text: #000;
+  --border: #333;
+  --accent: #4A3D6B;
+  --shadow: 0 0 0 2px #333;
+}
+body.reduced-motion *, body.reduced-motion *::before, body.reduced-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+a { color: var(--accent); }
+header.app-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.app-title { font-size: 1.1rem; font-weight: 600; color: var(--accent); margin: 0; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
+nav.main-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  z-index: 100;
+  height: var(--nav-h);
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+}
+nav.main-nav button {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px 4px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+nav.main-nav button.active { color: var(--accent); font-weight: 600; }
+nav.main-nav button .nav-icon { font-size: 1.2rem; }
+main { max-width: 900px; margin: 0 auto; padding: 16px; }
+.screen { display: none; }
+.screen.active { display: block; }
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.card h2, .card h3 { margin-top: 0; color: var(--accent); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-light); }
+.btn-secondary { background: var(--accent-soft); color: var(--accent); }
+.btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+.btn-block { width: 100%; }
+.btn-sm { min-height: 40px; padding: 8px 14px; font-size: 0.9rem; }
+.home-cards { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 600px) { .home-cards { grid-template-columns: repeat(3, 1fr); } }
+.home-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid var(--border);
+  transition: border-color 0.2s, transform 0.2s;
+  min-height: 120px;
+}
+.home-card:hover { border-color: var(--accent-light); transform: translateY(-2px); }
+.home-card .icon { font-size: 2rem; margin-bottom: 8px; }
+.progress-bar-wrap {
+  background: var(--accent-soft);
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+.progress-bar-fill {
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.tag {
+  display: inline-block;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  margin-right: 6px;
+}
+.book-badge {
+  display: inline-block;
+  background: #F5F0E8;
+  border-left: 3px solid var(--gold);
+  padding: 8px 12px;
+  margin: 12px 0;
+  font-size: 0.9rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.confidence { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.85rem; }
+.confidence-high { background: #E8F5E9; color: var(--success); }
+.confidence-medium { background: #FFF8E1; color: var(--warning); }
+input[type="text"], textarea, select {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+textarea { min-height: 100px; resize: vertical; }
+.lesson-list, .scenario-list { list-style: none; padding: 0; margin: 0; }
+.lesson-list li, .scenario-list li {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lesson-list li:hover, .scenario-list li:hover { background: var(--accent-soft); }
+.lesson-list li.done::after { content: "✓"; color: var(--success); font-weight: bold; }
+.schema {
+  background: #F8F6FC;
+  border: 1px dashed var(--accent-light);
+  padding: 16px;
+  border-radius: var(--radius);
+  font-family: Consolas, monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+.quiz-q { margin: 16px 0; padding: 12px; background: var(--bg); border-radius: var(--radius); }
+.quiz-q.correct { border-left: 4px solid var(--success); }
+.quiz-q.incorrect { border-left: 4px solid #C0392B; }
+.option-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 6px 0;
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+.option-btn.selected { border-color: var(--accent); background: var(--accent-soft); }
+.mode-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.mode-tab {
+  padding: 10px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  cursor: pointer;
+  font-family: inherit;
+}
+.mode-tab.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.phrase-bank { list-style: none; padding: 0; }
+.phrase-bank li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.phrase-bank .en { color: var(--text-muted); font-style: italic; margin-top: 4px; }
+.skill-map { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.skill-item {
+  padding: 12px;
+  background: var(--accent-soft);
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 0.85rem;
+}
+.skill-item.complete { background: #E8F5E9; }
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.toggle {
+  width: 52px; height: 28px;
+  background: var(--border);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: "";
+  position: absolute;
+  width: 22px; height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.2s;
+}
+.toggle.on::after { transform: translateX(24px); }
+.lang-toggle { font-weight: 600; min-width: 80px; }
+.en-block { color: var(--text-muted); font-style: italic; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+.word-chip {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent-light);
+  border-radius: 4px;
+  padding: 0 4px;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline dotted;
+}
+#word-popover {
+  position: fixed;
+  background: var(--card);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 200;
+  min-width: 200px;
+  text-align: center;
+}
+#word-popover .ipa { font-family: "Lucida Sans Unicode", sans-serif; color: var(--accent); font-size: 1.1rem; margin: 8px 0; }
+#toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+#toast.show { opacity: 1; }
+#speech-banner {
+  background: #FFF8E1;
+  border: 1px solid var(--gold);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  display: none;
+}
+.hidden { display: none !important; }
+@media (min-width: 768px) {
+  body { padding-bottom: 16px; }
+  nav.main-nav {
+    position: sticky;
+    top: 56px;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  nav.main-nav button { font-size: 0.85rem; flex-direction: row; gap: 6px; }
+}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <h1 class="app-title">VoiceYour KB — SSJ100</h1>
+  <div class="header-actions">
+    <button class="btn btn-secondary btn-sm lang-toggle" id="langToggle" aria-label="Переключить язык">RU</button>
+  </div>
+</header>
+<nav class="main-nav" aria-label="Основная навигация">
+  <button data-screen="home" class="active"><span class="nav-icon">🏠</span><span>Главная</span></button>
+  <button data-screen="ask"><span class="nav-icon">💬</span><span>Спросить</span></button>
+  <button data-screen="learn"><span class="nav-icon">📖</span><span>Изучить</span></button>
+  <button data-screen="practice"><span class="nav-icon">🎯</span><span>Отработать</span></button>
+  <button data-screen="progress"><span class="nav-icon">📊</span><span>Прогресс</span></button>
+  <button data-screen="settings"><span class="nav-icon">⚙️</span><span>Настройки</span></button>
+</nav>
+<main>
+  <div id="speech-banner"></div>
+  <section id="screen-home" class="screen active"></section>
+  <section id="screen-ask" class="screen"></section>
+  <section id="screen-learn" class="screen"></section>
+  <section id="screen-practice" class="screen"></section>
+  <section id="screen-progress" class="screen"></section>
+  <section id="screen-settings" class="screen"></section>
+</main>
+<div id="word-popover" hidden role="dialog" aria-label="Транскрипция слова">
+  <strong id="popover-word"></strong>
+  <div class="ipa" id="popover-ipa"></div>
+  <button class="btn btn-primary btn-sm" id="popover-speak">🔊 Озвучить</button>
+</div>
+<div id="toast" role="status"></div>
+<script>
+const BOOKS = {
+  "camp": {
+    "id": "camp",
+    "author": "Джим Кэмп",
+    "title": "Сначала скажите «НЕТ»",
+    "titleEn": "Start with No",
+    "keyIdea": "«Нет» — не конец переговоров, а начало осмысленного решения без давления."
+  },
+  "berger": {
+    "id": "berger",
+    "author": "Иона Бергер",
+    "title": "Как люди убеждают",
+    "titleEn": "Invisible Influence",
+    "keyIdea": "Убеждение строится на конкретных доказательствах, социальном доказательстве и ясной логике фактов."
+  },
+  "voice": {
+    "id": "voice",
+    "author": "Ренee Grant-Williams",
+    "title": "Власть голоса",
+    "titleEn": "The Power of Voice",
+    "keyIdea": "Пауза, темп и интонация формируют авторитет так же, как содержание аргумента."
+  },
+  "voss": {
+    "id": "voss",
+    "author": "Крис Восс",
+    "title": "Договориться не проблема",
+    "titleEn": "Never Split the Difference",
+    "keyIdea": "Маркировка эмоций, калиброванные вопросы и тактическая эмпатия снижают сопротивление."
+  },
+  "stone": {
+    "id": "stone",
+    "author": "Дуглас Стоун, Брюс Пэттон, Шейла Хин",
+    "title": "Неудобные разговоры",
+    "titleEn": "Difficult Conversations",
+    "keyIdea": "В каждом сложном диалоге одновременно звучат три разговора: о фактах, о чувствах и о самоидентичности."
+  }
+};
+const DATA = { ask: [
+  {
+    "id": "a1",
+    "keywords": [
+      "отказ",
+      "отказать",
+      "срочн",
+      "доработк",
+      "кд"
+    ],
+    "question": "Как отказать ведущему конструктору в срочной доработке КД?",
+    "answer": "Признайте значимость запроса и обозначьте критерий решения: «Я понимаю, что выпуск комплекта КД к milestone сертификации для вас приоритетен. Чтобы принять взвешенное решение, мне необходимо зафиксировать, какие именно листы затронуты и какой расчётный ресурс узла будет пересмотрен. Без этих данных я не смогу взять обязательство, не создав конструктивный риск.»",
+    "answerEn": "I acknowledge the significance of your request regarding the design documentation release. To reach a considered decision, I must first establish which drawing sheets are affected and which structural life assessment will require revision. Without this substantiation, I cannot commit without introducing unacceptable design risk.",
+    "source": "camp",
+    "fragmentPreview": "Решение принимается на основе критериев, а не под давлением срока.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a2",
+    "keywords": [
+      "материал",
+      "обшив",
+      "оспор",
+      "несоглас"
+    ],
+    "question": "Как оспорить решение по материалу обшивки без конфликта?",
+    "answer": "Используйте формулу фактов и последствий: «По результатам испытаний образцов на усталость при температуре −54 °C композитная панель показала запас ниже расчётного на 12 %. Предлагаю рассмотреть альтернативу с сохранением массы, но с подтверждённым ресурсом. Готов представить протокол испытаний на ближайшем совещании КБ.»",
+    "answerEn": "Based on fatigue test results at −54 °C, the composite panel demonstrated a margin 12 % below the calculated requirement. I respectfully propose an alternative that preserves mass while offering verified service life. I am prepared to present the test protocol at the forthcoming design bureau review.",
+    "source": "stone",
+    "fragmentPreview": "Разговор о фактах, а не о личной позиции.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a3",
+    "keywords": [
+      "риск",
+      "испытан",
+      "срыв",
+      "авионик",
+      "fadec"
+    ],
+    "question": "Как сообщить о риске срыва испытаний авионики?",
+    "answer": "Начните с маркировки: «Похоже, задержка стенда FADEC вызывает обеспокоенность по срокам сертификации.» Затем обозначьте факт: «По текущему графику мы теряем две недели на цикл верификации ПО.» Завершите калиброванным вопросом: «Как вы видите приоритет — перенос milestone или привлечение резервного стенда?»",
+    "answerEn": "It appears the FADEC test bench delay is causing concern regarding certification milestones. Under the current schedule, we stand to lose two weeks on the software verification cycle. How would you prioritise — milestone deferral or deployment of the reserve test bench?",
+    "source": "voss",
+    "fragmentPreview": "Labeling + calibrated question снижают оборонительную реакцию.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a4",
+    "keywords": [
+      "защит",
+      "решени",
+      "главн",
+      "конструктор"
+    ],
+    "question": "Как защитить проектное решение перед главным конструктором?",
+    "answer": "Структура: контекст → расчёт → прецедент → запрос. «При компоновке узла шасси SSJ100 мы выбрали схему с телескопической стойкой на основании расчёта на посадочный удар 2,5g. Аналогичное решение применено на сертифицированном узле NLG-400. Прошу утвердить базовую компоновку либо указать параметры для пересчёта.»",
+    "answerEn": "In the SSJ100 landing gear layout, we selected a telescopic strut configuration based on a 2.5g landing impact calculation. An equivalent solution has been certified on assembly NLG-400. I respectfully request approval of the baseline layout or specification of parameters for recalculation.",
+    "source": "berger",
+    "fragmentPreview": "Конкретные доказательства убеждают лучше общих утверждений.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a5",
+    "keywords": [
+      "уточн",
+      "требован",
+      "двусмысл",
+      "тз"
+    ],
+    "question": "Как уточнить технические требования без двусмысленности?",
+    "answer": "Задайте три уточняющих вопроса по модели Стоун: «Что именно произошло с параметрами нагрузки?» — «Как это влияет на ваши ожидания по ресурсу?» — «Как мы зафиксируем критерий приёмки в протоколе?» Запишите ответы в протокол совещания КБ.",
+    "answerEn": "What precisely has changed regarding the load parameters? How does this affect your expectations for service life? How shall we document the acceptance criteria in the minutes? I propose we record your responses in the design bureau meeting protocol.",
+    "source": "stone",
+    "fragmentPreview": "Три разговора: факты, чувства, идентичность.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a6",
+    "keywords": [
+      "голос",
+      "пауз",
+      "интонац",
+      "спокойн"
+    ],
+    "question": "Как использовать голос и паузы на совещании КБ?",
+    "answer": "Перед ключевой формулировкой сделайте паузу 2–3 секунды, понизьте темп на 15–20 %, завершите фразу на нисходящей интонации. Это сигнализирует уверенность без повышения громкости. Избегайте заполнителей («ну», «как бы») при представлении расчётных данных.",
+    "answerEn": "Before delivering a key statement, pause for two to three seconds, reduce pace by approximately fifteen to twenty per cent, and conclude with a descending intonation. This conveys authority without raising volume. Avoid filler words when presenting calculated data.",
+    "source": "voice",
+    "fragmentPreview": "Пауза — инструмент управления вниманием аудитории.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "medium"
+  },
+  {
+    "id": "a7",
+    "keywords": [
+      "итог",
+      "следующ",
+      "шаг",
+      "резюме",
+      "протокол"
+    ],
+    "question": "Как зафиксировать следующие шаги после ревью проекта?",
+    "answer": "«Подведу итог: (1) до 15 июня — выпуск расчёта нагрузок на законцовку крыла; (2) до 22 июня — согласование с отделом сертификации; (3) ответственный — инженер-расчётчик Иванов. Прошу подтвердить или скорректировать.»",
+    "answerEn": "To summarise: (1) by 15 June — release of wing tip load calculation; (2) by 22 June — coordination with the certification department; (3) responsible party — stress engineer Ivanov. Kindly confirm or propose amendments.",
+    "source": "voss",
+    "fragmentPreview": "Чёткая фиксация action items предотвращает расхождение трактовок.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a8",
+    "keywords": [
+      "срок",
+      "переговор",
+      "дедлайн",
+      "milestone"
+    ],
+    "question": "Как вести переговоры по срокам выпуска КД?",
+    "answer": "Используйте no-oriented вопрос: «Было бы неразумно перенести milestone на две недели, если это позволит закрыть замечания Росавиации по узлу топливной системы?» Так вы даёте собеседнику право сказать «нет» и сохраняете пространство для обсуждения.",
+    "answerEn": "Would it be unreasonable to defer the milestone by two weeks if that enables us to close Rosaviatsiya remarks on the fuel system assembly? This no-oriented question preserves dialogue space.",
+    "source": "camp",
+    "fragmentPreview": "Вопрос, на который можно ответить «нет», снижает сопротивление.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a9",
+    "keywords": [
+      "сложн",
+      "разговор",
+      "конфликт",
+      "ревью"
+    ],
+    "question": "Как провести сложный разговор на ревью проекта?",
+    "answer": "Разделите разговор на три части: факты (что показал расчёт), интерпретации (как мы это понимаем), вклад (что каждый может сделать). Не смешивайте критику решения с оценкой компетентности инженера.",
+    "answerEn": "Separate the conversation into three components: facts (what the calculation demonstrated), interpretations (how we understand it), and contributions (what each party can undertake). Do not conflate criticism of a decision with assessment of an engineer's competence.",
+    "source": "stone",
+    "fragmentPreview": "Разделение «что произошло» и «что это значит для меня».",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  },
+  {
+    "id": "a10",
+    "keywords": [
+      "несоглас",
+      "мягк",
+      "совещан"
+    ],
+    "question": "Как выразить мягкое несогласие на совещании КБ?",
+    "answer": "«Я слышу вашу логику по переходу на монолитную схему крепления. При этом расчёт на срез показывает концентрацию напряжений в зоне отверстия. Предлагаю параллельно проработать вариант с усиленной накладкой — это займёт три рабочих дня.»",
+    "answerEn": "I understand your rationale for transitioning to a monolithic attachment scheme. However, the shear calculation indicates stress concentration at the aperture zone. I propose parallel development of a reinforced doubler variant — requiring three working days.",
+    "source": "camp",
+    "fragmentPreview": "Признание позиции собеседника перед контраргументом.",
+    "version": "1.0",
+    "date": "2026-05-29",
+    "confidence": "high"
+  }
+], lessons: [
+  {
+    "id": "l1",
+    "title": "Вежливый отказ без разрушения рабочих отношений",
+    "titleEn": "Courteous Refusal Without Damaging Professional Relations",
+    "skillTag": "Refusal",
+    "books": [
+      "camp"
+    ],
+    "keyIdea": "Отказ — это уточнение критериев, а не отвержение человека.",
+    "keyIdeaEn": "Refusal is a clarification of criteria, not a rejection of the person.",
+    "explanation": "В Конструкторском Бюро SSJ100 запросы на срочную доработку КД поступают регулярно. Вежливый отказ строится на признании значимости задачи и обозначении объективных ограничений: расчётный ресурс, сертификационные требования, загрузка испытательного полигона. Формула «понимаю — не могу без данных — предлагаю альтернативу» сохраняет профессиональный авторитет.",
+    "explanationEn": "Within the SSJ100 Design Bureau, urgent design documentation requests are commonplace. A courteous refusal acknowledges task significance while citing objective constraints: calculated service life, certification requirements, test bench capacity.",
+    "schema": "Запрос → Признание → Критерий решения → Альтернатива\n     ↓\n  «Понимаю приоритет milestone сертификации.\n   Без пересчёта нагрузок обязательство\n   создаст конструктивный риск.\n   Предлагаю выпуск урезанного комплекта КД.»",
+    "questions": [
+      {
+        "q": "Что должно предшествовать отказу?",
+        "qEn": "What should precede a refusal?",
+        "opts": [
+          "Критика коллеги",
+          "Признание значимости запроса",
+          "Ссылка на усталость"
+        ],
+        "optsEn": [
+          "Criticism of colleague",
+          "Acknowledgement of request significance",
+          "Reference to fatigue"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "«Нет» в переговорах Кэмпа означает:",
+        "qEn": "«No» in Camp's framework means:",
+        "opts": [
+          "Конец диалога",
+          "Начало осмысленного решения",
+          "Уступку"
+        ],
+        "optsEn": [
+          "End of dialogue",
+          "Beginning of considered decision",
+          "Concession"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Какой элемент НЕ входит в формулу вежливого отказа?",
+        "qEn": "Which element is NOT part of courteous refusal?",
+        "opts": [
+          "Критерий",
+          "Альтернатива",
+          "Ультиматум"
+        ],
+        "optsEn": [
+          "Criterion",
+          "Alternative",
+          "Ultimatum"
+        ],
+        "correct": 2
+      }
+    ],
+    "miniCase": "Ведущий конструктор просит вас за два дня переработать компоновку ниши шасси SSJ100. У вас не завершён расчёт на посадочный удар. Как ответить?",
+    "miniCaseEn": "The lead designer requests a landing gear bay layout revision within two days. Your landing impact calculation remains incomplete. How do you respond?",
+    "formulation": {
+      "bad": "«Нет, я не успею, у меня и так много работы.»",
+      "good": "«Я понимаю срочность в связи с milestone сертификации. Для качественной доработки необходимо завершить расчёт на 2,5g — это займёт три рабочих дня. Могу предоставить предварительную схему сегодня, полный комплект КД — к пятнице.»"
+    },
+    "criticalWords": [
+      {
+        "word": "substantiation",
+        "ipa": "/ˌsʌbstænʃiˈeɪʃən/",
+        "ru": "обоснование"
+      },
+      {
+        "word": "commitment",
+        "ipa": "/kəˈmɪtmənt/",
+        "ru": "обязательство"
+      }
+    ]
+  },
+  {
+    "id": "l2",
+    "title": "Уточнение технических требований без двусмысленности",
+    "titleEn": "Clarifying Technical Requirements Without Ambiguity",
+    "skillTag": "Clarification",
+    "books": [
+      "stone"
+    ],
+    "keyIdea": "Неоднозначность ТЗ — источник конструктивных рисков и переделок.",
+    "keyIdeaEn": "Ambiguity in specifications is a source of design risk and rework.",
+    "explanation": "При получении ТЗ от ведущего конструктора выделите три слоя: фактические параметры (нагрузки, материалы), ожидания (срок, ресурс), критерии приёмки (протокол, сертификация). Каждый слой требует отдельного уточняющего вопроса.",
+    "explanationEn": "Upon receiving specifications from the lead designer, distinguish three layers: factual parameters, expectations, and acceptance criteria. Each layer warrants a separate clarifying question.",
+    "schema": "ТЗ → Что произошло? → Что это значит? → Как зафиксируем?\n         (факты)    (ожидания)    (критерий приёмки)",
+    "questions": [
+      {
+        "q": "Сколько «разговоров» в сложном диалоге по Стоун?",
+        "qEn": "How many conversations in Stone's model?",
+        "opts": [
+          "2",
+          "3",
+          "5"
+        ],
+        "optsEn": [
+          "2",
+          "3",
+          "5"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Где фиксировать уточнённые требования?",
+        "qEn": "Where to record clarified requirements?",
+        "opts": [
+          "Устно",
+          "В протоколе совещания КБ",
+          "В личном чате"
+        ],
+        "optsEn": [
+          "Verbally",
+          "In design bureau meeting minutes",
+          "In personal chat"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Первый вопрос при неясном ТЗ:",
+        "qEn": "First question for unclear specs:",
+        "opts": [
+          "Кто виноват?",
+          "Что именно изменилось в параметрах?",
+          "Когда дедлайн?"
+        ],
+        "optsEn": [
+          "Who is at fault?",
+          "What precisely changed in parameters?",
+          "When is the deadline?"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Ведущий конструктор написал: «Усилить узел крепления обшивки к стрingerу». Нагрузка и материал не указаны. Ваши действия?",
+    "miniCaseEn": "The lead designer wrote: «Reinforce the skin-to-stringer attachment joint.» Load and material unspecified. Your actions?",
+    "formulation": {
+      "bad": "«Хорошо, сделаю как получится.»",
+      "good": "«Уточните, пожалуйста: какой расчётный случай нагрузки (максимальный разгон/посадка)? Какой материал обшивки принимаем за базовый? Какой критерий приёмки — протокол испытаний или расчёт?»"
+    },
+    "criticalWords": [
+      {
+        "word": "specification",
+        "ipa": "/ˌspesɪfɪˈkeɪʃən/",
+        "ru": "техническое задание"
+      },
+      {
+        "word": "acceptance",
+        "ipa": "/əkˈseptəns/",
+        "ru": "приёмка"
+      }
+    ]
+  },
+  {
+    "id": "l3",
+    "title": "Конструктивное несогласие на совещании КБ",
+    "titleEn": "Constructive Disagreement at Design Bureau Meetings",
+    "skillTag": "Disagreement",
+    "books": [
+      "stone",
+      "camp"
+    ],
+    "keyIdea": "Несогласие с решением не означает несогласие с человеком.",
+    "keyIdeaEn": "Disagreeing with a decision does not mean disagreeing with the person.",
+    "explanation": "На совещаниях по компоновке SSJ100 мнения расходятся часто. Алгоритм: (1) признайте логику оппонента; (2) представьте расчётный факт; (3) предложите параллельную проработку с конкретным сроком. Избегайте оценочных суждений о компетентности.",
+    "explanationEn": "At SSJ100 layout reviews, opinions frequently diverge. Acknowledge the opponent's logic, present calculated facts, propose parallel development with a specific timeline.",
+    "schema": "Позиция А → «Слышу логику…» → Факт расчёта → «Предлагаю проработать…»\n                    ↓\n              Срок + критерий сравнения",
+    "questions": [
+      {
+        "q": "Что НЕ следует делать при несогласии?",
+        "qEn": "What should NOT be done when disagreeing?",
+        "opts": [
+          "Приводить расчёт",
+          "Оценивать компетентность коллеги",
+          "Предлагать альтернативу"
+        ],
+        "optsEn": [
+          "Cite calculation",
+          "Assess colleague competence",
+          "Propose alternative"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "«Слышу вашу логику» — это:",
+        "qEn": "«I hear your logic» is:",
+        "opts": [
+          "Уступка",
+          "Признание позиции",
+          "Формальность"
+        ],
+        "optsEn": [
+          "Concession",
+          "Acknowledgement of position",
+          "Formality"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Параллельная проработка должна включать:",
+        "qEn": "Parallel development should include:",
+        "opts": [
+          "Только идею",
+          "Срок и критерий сравнения",
+          "Жалобу руководству"
+        ],
+        "optsEn": [
+          "Idea only",
+          "Timeline and comparison criterion",
+          "Complaint to management"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "На ревью крыла SSJ100 главный конструктор настаивает на монолитной схеме, ваш расчёт показывает концентрацию напряжений. Как высказать несогласие?",
+    "miniCaseEn": "At the SSJ100 wing review, the chief designer insists on a monolithic scheme; your calculation shows stress concentration. How do you express disagreement?",
+    "formulation": {
+      "bad": "«Это решение ошибочно, расчёт это доказывает.»",
+      "good": "«Я слышу аргументы в пользу монолитной схемы с точки зрения технологичности. Расчёт на срез выявил концентрацию напряжений 1,4 от допустимой. Предлагаю за три дня проработать вариант с усиленной накладкой для сравнения.»"
+    },
+    "criticalWords": [
+      {
+        "word": "disagreement",
+        "ipa": "/ˌdɪsəˈɡriːmənt/",
+        "ru": "несогласие"
+      },
+      {
+        "word": "concentration",
+        "ipa": "/ˌkɒnsənˈtreɪʃən/",
+        "ru": "концентрация"
+      }
+    ]
+  },
+  {
+    "id": "l4",
+    "title": "Защита проектного решения перед главным конструктором",
+    "titleEn": "Defending a Design Decision Before the Chief Designer",
+    "skillTag": "Argumentation",
+    "books": [
+      "berger"
+    ],
+    "keyIdea": "Убедительность — это язык расчётов, прецедентов и прозрачных допущений.",
+    "keyIdeaEn": "Persuasiveness is the language of calculations, precedents, and transparent assumptions.",
+    "explanation": "Главный конструктор SSJ100 оценивает не красноречие, а обоснованность. Структура защиты: контекст задачи → расчётное обоснование → сертификационный прецедент → явный запрос (утвердить / указать параметры для пересчёта).",
+    "explanationEn": "The chief designer evaluates substantiation, not eloquence. Structure: task context → calculated justification → certification precedent → explicit request.",
+    "schema": "Контекст → Расчёт → Прецедент → Запрос\n  ↓         ↓         ↓          ↓\n SSJ100   2,5g     NLG-400   «Утвердить\n узел              сертиф.    или пересчёт»",
+    "questions": [
+      {
+        "q": "Что убеждает главного конструктора лучше всего?",
+        "qEn": "What persuades the chief designer most effectively?",
+        "opts": [
+          "Эмоции",
+          "Конкретные расчёты и прецеденты",
+          "Ссылки на авторитет"
+        ],
+        "optsEn": [
+          "Emotions",
+          "Concrete calculations and precedents",
+          "Appeals to authority"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Завершение защиты решения должно содержать:",
+        "qEn": "Defence should conclude with:",
+        "opts": [
+          "Молчание",
+          "Явный запрос",
+          "Извинение"
+        ],
+        "optsEn": [
+          "Silence",
+          "Explicit request",
+          "Apology"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Социальное доказательство по Бергеру — это:",
+        "qEn": "Social proof per Berger is:",
+        "opts": [
+          "Давление",
+          "Ссылка на сертифицированный аналог",
+          "Мнение большинства без фактов"
+        ],
+        "optsEn": [
+          "Pressure",
+          "Reference to certified analogue",
+          "Majority opinion without facts"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Вы предлагаете телескопическую стойку шасси SSJ100. Главный конструктор скептичен. Подготовьте 30-секундную защиту.",
+    "miniCaseEn": "You propose a telescopic SSJ100 landing gear strut. The chief designer is sceptical. Prepare a 30-second defence.",
+    "formulation": {
+      "bad": "«Мы так всегда делали, это проверенная схема.»",
+      "good": "«Узел шасси SSJ100 рассчитан на посадочный удар 2,5g. Телескопическая стойка обеспечивает запас прочности 1,25 при массе на 8 % ниже аналога. Схема сертифицирована на NLG-400. Прошу утвердить базовую компоновку.»"
+    },
+    "criticalWords": [
+      {
+        "word": "precedent",
+        "ipa": "/ˈpresɪdənt/",
+        "ru": "прецедент"
+      },
+      {
+        "word": "substantiation",
+        "ipa": "/ˌsʌbstænʃiˈeɪʃən/",
+        "ru": "обоснование"
+      }
+    ]
+  },
+  {
+    "id": "l5",
+    "title": "Фиксация следующих шагов после ревью",
+    "titleEn": "Recording Next Steps After Project Review",
+    "skillTag": "Summarizing",
+    "books": [
+      "voss"
+    ],
+    "keyIdea": "Незафиксированные договорённости — источник повторных совещаний.",
+    "keyIdeaEn": "Unrecorded agreements are a source of repeated meetings.",
+    "explanation": "После ревью проекта SSJ100 завершите разговор резюме: нумерованный список action items с датами, ответственными и критерием готовности. Попросите подтверждение: «Прошу подтвердить или скорректировать.»",
+    "explanationEn": "After SSJ100 project review, conclude with a numbered list of action items including dates, responsible parties, and completion criteria.",
+    "schema": "Ревью → Резюме (1,2,3) → Ответственный → Дата → «Подтвердите?»",
+    "questions": [
+      {
+        "q": "Action item должен содержать:",
+        "qEn": "An action item must include:",
+        "opts": [
+          "Только задачу",
+          "Задачу, дату, ответственного",
+          "Только дату"
+        ],
+        "optsEn": [
+          "Task only",
+          "Task, date, responsible party",
+          "Date only"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Зачем просить подтверждение резюме?",
+        "qEn": "Why request confirmation of summary?",
+        "opts": [
+          "Для формальности",
+          "Чтобы выявить расхождение трактовок",
+          "Чтобы закончить быстрее"
+        ],
+        "optsEn": [
+          "For formality",
+          "To identify divergent interpretations",
+          "To finish faster"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "«Подведу итог» — это техника:",
+        "qEn": "«To summarise» is a technique from:",
+        "opts": [
+          "Camp",
+          "Voss",
+          "Berger"
+        ],
+        "optsEn": [
+          "Camp",
+          "Voss",
+          "Berger"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Ревью компоновки крыла SSJ100 завершилось тремя поручениями. Как зафиксировать их устно?",
+    "miniCaseEn": "The SSJ100 wing layout review concluded with three assignments. How do you record them verbally?",
+    "formulation": {
+      "bad": "«Ну, в общем, все поняли, что делать, да?»",
+      "good": "«Подведу итог: первое — до 15 июня расчёт нагрузок на законцовку, ответственный Иванов; второе — до 22 июня согласование с сертификацией; третье — протокол замечаний к 10 июня. Прошу подтвердить.»"
+    },
+    "criticalWords": [
+      {
+        "word": "milestone",
+        "ipa": "/ˈmaɪlstəʊn/",
+        "ru": "контрольная точка"
+      },
+      {
+        "word": "accountable",
+        "ipa": "/əˈkaʊntəbəl/",
+        "ru": "ответственный"
+      }
+    ]
+  },
+  {
+    "id": "l6",
+    "title": "Голос, пауза и спокойная формулировка инженера",
+    "titleEn": "Voice, Pause, and Calm Articulation for Engineers",
+    "skillTag": "Voice",
+    "books": [
+      "voice"
+    ],
+    "keyIdea": "Пауза перед ключевой цифрой увеличивает её воспринимаемый вес.",
+    "keyIdeaEn": "A pause before a key figure increases its perceived weight.",
+    "explanation": "На совещаниях КБ инженер представляет расчётные данные. Техника Grant-Williams: понизить темп на 15–20 % перед выводом, пауза 2–3 секунды, нисходящая интонация на утверждении. Избегайте повышения голоса — это считывается как неуверенность.",
+    "explanationEn": "At design bureau meetings, reduce pace before conclusions, pause two to three seconds, use descending intonation. Avoid raising volume — it signals uncertainty.",
+    "schema": "Данные → [пауза] → Вывод ↘\n  ↓                    ↓\n «Запас 1,25»      «Рекомендую\n                    утвердить»",
+    "questions": [
+      {
+        "q": "Пауза перед ключевой цифрой:",
+        "qEn": "A pause before a key figure:",
+        "opts": [
+          "Снижает внимание",
+          "Увеличивает вес утверждения",
+          "Не имеет значения"
+        ],
+        "optsEn": [
+          "Reduces attention",
+          "Increases statement weight",
+          "Is irrelevant"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Нисходящая интонация сигнализирует:",
+        "qEn": "Descending intonation signals:",
+        "opts": [
+          "Вопрос",
+          "Уверенность",
+          "Сомнение"
+        ],
+        "optsEn": [
+          "Question",
+          "Confidence",
+          "Doubt"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Чего избегать при представлении расчёта?",
+        "qEn": "What to avoid when presenting calculations?",
+        "opts": [
+          "Пауз",
+          "Заполнителей («ну», «как бы»)",
+          "Структуры"
+        ],
+        "optsEn": [
+          "Pauses",
+          "Fillers",
+          "Structure"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Вы докладываете о запасе прочности 1,15 — ниже целевого 1,25. Как подать это спокойно?",
+    "miniCaseEn": "You report a strength margin of 1.15 — below the 1.25 target. How do you deliver this calmly?",
+    "formulation": {
+      "bad": "«Ну, там, короче, запас не очень, 1,15, надо что-то делать…»",
+      "good": "«[пауза] Расчётный запас прочности составляет 1,15 при целевом 1,25. [пауза] Рекомендую усиление в зоне LHT-442 до следующего ревью.»"
+    },
+    "criticalWords": [
+      {
+        "word": "articulation",
+        "ipa": "/ɑːˌtɪkjuˈleɪʃən/",
+        "ru": "артикуляция"
+      },
+      {
+        "word": "intonation",
+        "ipa": "/ˌɪntəˈneɪʃən/",
+        "ru": "интонация"
+      }
+    ]
+  },
+  {
+    "id": "l7",
+    "title": "Три уровня сложного разговора",
+    "titleEn": "Three Levels of a Difficult Conversation",
+    "skillTag": "Difficult talk",
+    "books": [
+      "stone"
+    ],
+    "keyIdea": "Разделите «что произошло», «что я чувствую» и «что это значит для меня».",
+    "keyIdeaEn": "Separate what happened, what I feel, and what this means for me.",
+    "explanation": "На ревью SSJ100 конфликт часто возникает из смешения фактов и оценок. Разговор о фактах: «Расчёт показал запас 1,1.» О чувствах: «Меня беспокоит риск для сертификации.» Об идентичности: «Для меня важно, чтобы решение было обоснованным расчётом.»",
+    "explanationEn": "At SSJ100 reviews, conflict arises from conflating facts and evaluations. Separate factual, emotional, and identity conversations.",
+    "schema": "What Happened → Feelings → Identity\n  (факты)     (чувства)  (самоидентичность)",
+    "questions": [
+      {
+        "q": "«Вы неправы» относится к разговору:",
+        "qEn": "«You are wrong» belongs to conversation about:",
+        "opts": [
+          "Фактов",
+          "Идентичности",
+          "Погоды"
+        ],
+        "optsEn": [
+          "Facts",
+          "Identity",
+          "Weather"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Первый шаг — обсудить:",
+        "qEn": "First step — discuss:",
+        "opts": [
+          "Кто виноват",
+          "Что произошло (факты)",
+          "Эмоции оппонента"
+        ],
+        "optsEn": [
+          "Who is at fault",
+          "What happened (facts)",
+          "Opponent emotions"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Смешение фактов и оценок ведёт к:",
+        "qEn": "Conflating facts and evaluations leads to:",
+        "opts": [
+          "Быстрому решению",
+          "Эскалации",
+          "Согласию"
+        ],
+        "optsEn": [
+          "Quick resolution",
+          "Escalation",
+          "Agreement"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Коллега-конструктор говорит: «Вы саботируете проект своими замечаниями.» Как перевести разговор на уровень фактов?",
+    "miniCaseEn": "A colleague says: «You are sabotaging the project with your remarks.» How do you shift to the factual level?",
+    "formulation": {
+      "bad": "«Я ничего не саботирую, это вы некомпетентны!»",
+      "good": "«Давайте вернёмся к фактам: мои три замечания касаются расчётного запаса в зонах LHT-442 и LHT-447. Готов пройти по каждому пункту с протоколом испытаний.»"
+    },
+    "criticalWords": [
+      {
+        "word": "identity",
+        "ipa": "/aɪˈdentəti/",
+        "ru": "идентичность"
+      },
+      {
+        "word": "escalation",
+        "ipa": "/ˌeskəˈleɪʃən/",
+        "ru": "эскалация"
+      }
+    ]
+  },
+  {
+    "id": "l8",
+    "title": "Маркировка эмоций собеседника (labeling)",
+    "titleEn": "Labeling the Counterpart's Emotions",
+    "skillTag": "Empathy",
+    "books": [
+      "voss"
+    ],
+    "keyIdea": "«Похоже, это вызывает обеспокоенность» — снижает оборонительную реакцию.",
+    "keyIdeaEn": "«It seems this is causing concern» — reduces defensive reaction.",
+    "explanation": "Когда руководитель давит по срокам КД, начните с labeling: «Похоже, перенос milestone сертификации для вас критичен.» Затем — факт и калиброванный вопрос. Не спорьте с эмоцией, назовите её.",
+    "explanationEn": "When management pressures on documentation deadlines, begin with labeling, then fact and calibrated question. Do not argue with emotion — name it.",
+    "schema": "Label → Fact → Calibrated Question\n «Похоже…» → «По графику…» → «Как вы видите…?»",
+    "questions": [
+      {
+        "q": "Labeling — это:",
+        "qEn": "Labeling is:",
+        "opts": [
+          "Оценка человека",
+          "Нейтральное называние эмоции",
+          "Уступка"
+        ],
+        "optsEn": [
+          "Judging person",
+          "Neutral naming of emotion",
+          "Concession"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "После labeling следует:",
+        "qEn": "After labeling follows:",
+        "opts": [
+          "Молчание",
+          "Факт и калиброванный вопрос",
+          "Ультиматум"
+        ],
+        "optsEn": [
+          "Silence",
+          "Fact and calibrated question",
+          "Ultimatum"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "«Похоже, вы обеспокоены» — техника:",
+        "qEn": "«It seems you are concerned» — technique of:",
+        "opts": [
+          "Camp",
+          "Voss",
+          "Berger"
+        ],
+        "optsEn": [
+          "Camp",
+          "Voss",
+          "Berger"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Начальник отдела сертификации повышает голос из-за задержки протокола испытаний. Ваш первый ответ?",
+    "miniCaseEn": "The certification department head raises voice over delayed test protocol. Your first response?",
+    "formulation": {
+      "bad": "«Не кричите, я работаю как могу!»",
+      "good": "«Похоже, задержка протокола испытаний FADEC вызывает серьёзную обеспокоенность по срокам EASA. По текущему статусу — готовность через четыре рабочих дня. Как вы видите приоритет: ускорить выпуск или согласовать промежуточный отчёт?»"
+    },
+    "criticalWords": [
+      {
+        "word": "labeling",
+        "ipa": "/ˈleɪbəlɪŋ/",
+        "ru": "маркировка"
+      },
+      {
+        "word": "calibrated",
+        "ipa": "/ˈkælɪbreɪtɪd/",
+        "ru": "калиброванный"
+      }
+    ]
+  },
+  {
+    "id": "l9",
+    "title": "Убедительная аргументация на языке фактов и расчётов",
+    "titleEn": "Persuasive Argumentation in the Language of Facts",
+    "skillTag": "Persuasion",
+    "books": [
+      "berger"
+    ],
+    "keyIdea": "Конкретность убеждает; абстракция — нет.",
+    "keyIdeaEn": "Specificity persuades; abstraction does not.",
+    "explanation": "Бerger: люди убеждаются конкретными примерами, цифрами, визуальными данными. В КБ SSJ100 — это протоколы испытаний, кривые нагрузок, сертификационные прецеденты. «Запас 1,25» убедительнее «достаточный запас».",
+    "explanationEn": "People are persuaded by concrete examples, figures, visual data. In SSJ100 DB — test protocols, load curves, certification precedents.",
+    "schema": "Абстракция → Конкретика → Прецедент\n «достаточно»  → «1,25»    → «NLG-400»",
+    "questions": [
+      {
+        "q": "Что убедительнее?",
+        "qEn": "What is more persuasive?",
+        "opts": [
+          "«Достаточный запас»",
+          "«Запас 1,25 при σ=450 МПа»",
+          "«Всё в порядке»"
+        ],
+        "optsEn": [
+          "«Sufficient margin»",
+          "«Margin 1.25 at σ=450 MPa»",
+          "«All is well»"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Социальное доказательство в КБ — это:",
+        "qEn": "Social proof in DB context is:",
+        "opts": [
+          "Мнение коллег за обедом",
+          "Сертифицированный аналог",
+          "Интуиция"
+        ],
+        "optsEn": [
+          "Lunch opinion",
+          "Certified analogue",
+          "Intuition"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Абстрактные формулировки:",
+        "qEn": "Abstract formulations:",
+        "opts": [
+          "Убеждают лучше",
+          "Снижают доверие",
+          "Не влияют"
+        ],
+        "optsEn": [
+          "Persuade better",
+          "Reduce trust",
+          "No effect"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Нужно убедить отдел сертификации принять композитную панель. Какие три элемента включить в аргументацию?",
+    "miniCaseEn": "You must persuade certification to accept a composite panel. What three elements to include?",
+    "formulation": {
+      "bad": "«Мaterial проверенный, всё будет хорошо.»",
+      "good": "«Панель прошла испытания на усталость: 50 000 циклов при ΔT=80 °C, запас 1,3. Аналог сертифицирован на SSJ100-015. Протокол №447 приложен. Прошу согласовать для включения в комплект КД.»"
+    },
+    "criticalWords": [
+      {
+        "word": "persuasion",
+        "ipa": "/pəˈsweɪʒən/",
+        "ru": "убеждение"
+      },
+      {
+        "word": "precedent",
+        "ipa": "/ˈpresɪdənt/",
+        "ru": "прецедент"
+      }
+    ]
+  },
+  {
+    "id": "l10",
+    "title": "Подготовка к переговорам по срокам сертификации",
+    "titleEn": "Preparing for Certification Timeline Negotiations",
+    "skillTag": "Negotiation",
+    "books": [
+      "camp",
+      "voss"
+    ],
+    "keyIdea": "Переговоры о сроках — это совместный поиск критериев, а не торг «кто сдастся».",
+    "keyIdeaEn": "Timeline negotiations are joint criteria search, not a battle of wills.",
+    "explanation": "Перед переговорами по milestone SSJ100 подготовьте: (1) no-oriented вопросы Camp; (2) labeling эмоций Voss; (3) три варианта с последствиями (перенос / урезание scope / дополнительные ресурсы). Не начинайте с уступки.",
+    "explanationEn": "Before SSJ100 milestone negotiations prepare: no-oriented questions, emotion labeling, three options with consequences.",
+    "schema": "Подготовка → No-oriented Q → 3 варианта → Фиксация\n     ↓              ↓              ↓            ↓\n  Данные      «Неразумно ли…?»  A/B/C      Протокол",
+    "questions": [
+      {
+        "q": "No-oriented вопрос:",
+        "qEn": "No-oriented question:",
+        "opts": [
+          "«Вы согласны?»",
+          "«Было бы неразумно перенести на 2 нед.?»",
+          "«Когда сдадите?»"
+        ],
+        "optsEn": [
+          "«Do you agree?»",
+          "«Would it be unreasonable to defer 2 weeks?»",
+          "«When will you deliver?»"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Перед переговорами подготовьте:",
+        "qEn": "Before negotiations prepare:",
+        "opts": [
+          "Только одну позицию",
+          "Три варианта с последствиями",
+          "Ультиматум"
+        ],
+        "optsEn": [
+          "One position only",
+          "Three options with consequences",
+          "Ultimatum"
+        ],
+        "correct": 1
+      },
+      {
+        "q": "Переговоры о сроках — это:",
+        "qEn": "Timeline negotiations are:",
+        "opts": [
+          "Торг",
+          "Совместный поиск критериев",
+          "Конфликт"
+        ],
+        "optsEn": [
+          "Haggling",
+          "Joint criteria search",
+          "Conflict"
+        ],
+        "correct": 1
+      }
+    ],
+    "miniCase": "Milestone сертификации узла топливной системы под угрозой. У вас три рабочих дня до дедлайна. Как открыть переговоры?",
+    "miniCaseEn": "Fuel system certification milestone at risk. Three working days to deadline. How do you open negotiations?",
+    "formulation": {
+      "bad": "«Мы не успеем, перенесите срок.»",
+      "good": "«Было бы неразумно перенести milestone на две недели, если это позволит закрыть замечания Росавиации по герметичности? Альтернатива — выпуск промежуточного комплекта КД с ограничением по конфигурации. Какой вариант вы видите приоритетным?»"
+    },
+    "criticalWords": [
+      {
+        "word": "negotiation",
+        "ipa": "/nɪˌɡəʊʃiˈeɪʃən/",
+        "ru": "переговоры"
+      },
+      {
+        "word": "milestone",
+        "ipa": "/ˈmaɪlstəʊn/",
+        "ru": "контрольная точка"
+      }
+    ]
+  }
+], scenarios: [
+  {
+    "id": "s1",
+    "title": "Сложный разговор на ревью проекта",
+    "titleEn": "Difficult Conversation at Project Review",
+    "books": [
+      "voss",
+      "stone"
+    ],
+    "situation": "На ревью компоновки крыла SSJ100 вы представили расчёт, показывающий запас прочности 1,12 при норме 1,25. Главный конструктор публично заявил, что «расчёт некорректен и задерживает проект».",
+    "situationEn": "At the SSJ100 wing layout review you presented a calculation showing strength margin 1.12 against the 1.25 standard. The chief designer publicly stated the calculation is incorrect and delaying the project.",
+    "userRole": "Инженер-расчётчик",
+    "userRoleEn": "Stress Engineer",
+    "counterpartRole": "Главный конструктор",
+    "counterpartRoleEn": "Chief Designer",
+    "objective": "Защитить расчёт без эскалации, договориться о следующих шагах",
+    "objectiveEn": "Defend the calculation without escalation, agree on next steps",
+    "constraints": "Публичное совещание, присутствует отдел сертификации",
+    "constraintsEn": "Public meeting, certification department present",
+    "options": [
+      {
+        "text": "«Расчёт корректен, прошу не ставить под сомнение мою компетентность.»",
+        "textEn": "«The calculation is correct; kindly do not question my competence.»",
+        "feedback": "Эскалация на уровень идентичности. Стоун: смешение фактов и оценки личности.",
+        "feedbackEn": "Escalation to identity level. Stone: conflating facts with personal evaluation."
+      },
+      {
+        "text": "«Похоже, расхождение в запасе вызывает обеспокоенность. Расчёт выполнен по методике MS-2045, запас 1,12 — факт. Предлагаю независимую верификацию до пятницы. Как вы видите приоритет?»",
+        "textEn": "«It appears the margin discrepancy is causing concern. The calculation follows MS-2045 methodology; margin 1.12 is factual. I propose independent verification by Friday. How would you prioritise?»",
+        "feedback": "Labeling + факт + калиброванный вопрос (Voss). Сохраняет профессиональный тон.",
+        "feedbackEn": "Labeling + fact + calibrated question (Voss). Preserves professional tone."
+      },
+      {
+        "text": "Молчание и согласие с замечанием без обсуждения.",
+        "textEn": "Silence and agreement without discussion.",
+        "feedback": "Риск некорректного решения и потери профессионального авторитета.",
+        "feedbackEn": "Risk of incorrect decision and loss of professional authority."
+      }
+    ],
+    "recommended": {
+      "soft": "«Похоже, результат расчёта вызывает вопросы. Готов подробно пройти по методике и допущениям. Можем ли мы назначить отдельную сессию верификации?»",
+      "direct": "«Расчёт выполнен по MS-2045. Запас 1,12 — факт. Предлагаю независимую верификацию до пятницы.»",
+      "diplomatic": "«Похоже, расхождение в запасе вызывает обеспокоенность. Расчёт по методике MS-2045 показывает 1,12. Предлагаю совместную верификацию с отделом прочности до пятницы. Как вы видите приоритет?»"
+    },
+    "recommendedEn": {
+      "soft": "«It appears the calculation result raises questions. I am prepared to walk through methodology and assumptions in detail.»",
+      "direct": "«Calculation per MS-2045. Margin 1.12 is factual. Independent verification by Friday.»",
+      "diplomatic": "«It appears the margin discrepancy is causing concern. Calculation per MS-2045 shows 1.12. I propose joint verification with the strength department by Friday.»"
+    },
+    "phraseBank": [
+      {
+        "ru": "Похоже, это вызывает обеспокоенность.",
+        "en": "It appears this is causing concern."
+      },
+      {
+        "ru": "Давайте вернёмся к фактам расчёта.",
+        "en": "Let us return to the calculation facts."
+      },
+      {
+        "ru": "Как вы видите приоритет?",
+        "en": "How would you prioritise?"
+      },
+      {
+        "ru": "Предлагаю независимую верификацию.",
+        "en": "I propose independent verification."
+      },
+      {
+        "ru": "Готов пройти по методике и допущениям.",
+        "en": "I am prepared to walk through methodology and assumptions."
+      }
+    ],
+    "technique": "Labeling + What Happened (Stone) + Calibrated Question (Voss)"
+  },
+  {
+    "id": "s2",
+    "title": "Защита решения перед руководителем",
+    "titleEn": "Defending a Decision Before Management",
+    "books": [
+      "berger"
+    ],
+    "situation": "Вы предложили композитную обшивку люка SSJ100. Заместитель главного конструктора считает, что алюминиевая схема «провереннее» и требует обоснования.",
+    "situationEn": "You proposed composite SSJ100 hatch skin. The deputy chief designer considers aluminium scheme more proven and demands justification.",
+    "userRole": "Конструктор",
+    "userRoleEn": "Design Engineer",
+    "counterpartRole": "Заместитель главного конструктора",
+    "counterpartRoleEn": "Deputy Chief Designer",
+    "objective": "Получить одобрение базовой компоновки или чёткие параметры для пересчёта",
+    "objectiveEn": "Obtain baseline layout approval or clear recalculation parameters",
+    "constraints": "15 минут на доклад, нужны конкретные цифры",
+    "constraintsEn": "15-minute presentation, concrete figures required",
+    "options": [
+      {
+        "text": "«Композит — современное решение, алюминий устарел.»",
+        "textEn": "«Composite is modern; aluminium is obsolete.»",
+        "feedback": "Абстракция без доказательств. Berger: конкретность убеждает.",
+        "feedbackEn": "Abstraction without evidence. Berger: specificity persuades."
+      },
+      {
+        "text": "«Композитная панель: масса −12 %, испытания 50 000 циклов при ΔT=80 °C, запас 1,3. Аналог SSJ100-015 сертифицирован. Прошу утвердить или указать параметры пересчёта.»",
+        "textEn": "«Composite panel: mass −12 %, 50,000 cycles at ΔT=80 °C, margin 1.3. Analogue SSJ100-015 certified. Approve or specify recalculation parameters.»",
+        "feedback": "Контекст → расчёт → прецедент → запрос. Оптимально.",
+        "feedbackEn": "Context → calculation → precedent → request. Optimal."
+      },
+      {
+        "text": "«Мы так делали на прошлом проекте, доверьтесь.»",
+        "textEn": "«We did this on the previous project, trust us.»",
+        "feedback": "Appeal to authority без фактов — слабая аргументация.",
+        "feedbackEn": "Appeal to authority without facts — weak argumentation."
+      }
+    ],
+    "recommended": {
+      "soft": "«Понимаю осторожность по новому материалу. Позвольте представить протокол испытаний и сертификационный прецедент SSJ100-015.»",
+      "direct": "«Масса −12 %, запас 1,3, 50 000 циклов. Аналог сертифицирован. Прошу утвердить.»",
+      "diplomatic": "«Композитная панель прошла полный цикл испытаний: масса −12 %, запас 1,3. Аналог SSJ100-015 включён в сертификационную базу. Прошу утвердить базовую компоновку либо указать параметры для пересчёта.»"
+    },
+    "recommendedEn": {
+      "soft": "«I understand caution regarding new material. Allow me to present test protocol and certification precedent.»",
+      "direct": "«Mass −12 %, margin 1.3, 50,000 cycles. Analogue certified. Request approval.»",
+      "diplomatic": "«Composite panel completed full test cycle: mass −12 %, margin 1.3. Analogue SSJ100-015 in certification base. Approve baseline or specify recalculation parameters.»"
+    },
+    "phraseBank": [
+      {
+        "ru": "По результатам испытаний…",
+        "en": "Based on test results…"
+      },
+      {
+        "ru": "Аналог сертифицирован на…",
+        "en": "An equivalent has been certified on…"
+      },
+      {
+        "ru": "Прошу утвердить базовую компоновку.",
+        "en": "I respectfully request approval of the baseline layout."
+      },
+      {
+        "ru": "Готов представить протокол.",
+        "en": "I am prepared to present the protocol."
+      },
+      {
+        "ru": "Запас прочности составляет…",
+        "en": "The strength margin is…"
+      }
+    ],
+    "technique": "Concrete evidence + Social proof (Berger)"
+  },
+  {
+    "id": "s3",
+    "title": "Уточнение требований у коллеги",
+    "titleEn": "Clarifying Requirements with a Colleague",
+    "books": [
+      "stone"
+    ],
+    "situation": "Ведущий конструктор прислал задание: «Доработать крепление стрингера к frame в зоне WS-2200». Нагрузки, материал и критерий приёмки не указаны.",
+    "situationEn": "Lead designer sent: «Revise stringer-to-frame attachment in WS-2200 zone.» Loads, material, acceptance criteria unspecified.",
+    "userRole": "Конструктор",
+    "userRoleEn": "Design Engineer",
+    "counterpartRole": "Ведущий конструктор",
+    "counterpartRoleEn": "Lead Designer",
+    "objective": "Получить однозначное ТЗ без создания впечатления некомпетентности",
+    "objectiveEn": "Obtain unambiguous specifications without appearing incompetent",
+    "constraints": "Задание срочное, ведущий конструктор занят на совещании",
+    "constraintsEn": "Urgent task, lead designer in meeting",
+    "options": [
+      {
+        "text": "Начать доработку «на глаз», чтобы не отставать от графика.",
+        "textEn": "Begin revision by intuition to keep schedule.",
+        "feedback": "Риск переделок и конструктивных ошибок.",
+        "feedbackEn": "Risk of rework and design errors."
+      },
+      {
+        "text": "«Уточните, пожалуйста: расчётный случай нагрузки? Материал стрингера? Критерий приёмки — расчёт или протокол? Зафиксирую в протоколе.»",
+        "textEn": "«Kindly clarify: design load case? Stringer material? Acceptance criterion — calculation or protocol? I shall record in minutes.»",
+        "feedback": "Три вопроса по модели Stone. Профессионально и конструктивно.",
+        "feedbackEn": "Three questions per Stone model. Professional and constructive."
+      },
+      {
+        "text": "«Вы не можете нормально поставить задачу?»",
+        "textEn": "«Can you not assign tasks properly?»",
+        "feedback": "Атака на идентичность — гарантированная эскалация.",
+        "feedbackEn": "Identity attack — guaranteed escalation."
+      }
+    ],
+    "recommended": {
+      "soft": "«Чтобы выполнить доработку качественно, прошу уточнить три параметра: нагрузку, материал и критерий приёмки. Могу записать голосовым сообщением.»",
+      "direct": "«Какой расчётный случай? Материал? Критерий приёмки? Без этого начну некорректную доработку.»",
+      "diplomatic": "«Для качественной доработки крепления WS-2200 прошу уточнить: расчётный случай нагрузки, материал стрингера и критерий приёмки. Зафиксирую в протоколе совещания КБ.»"
+    },
+    "recommendedEn": {
+      "soft": "«To perform quality revision, kindly clarify three parameters. I can record via voice message.»",
+      "direct": "«Design load case? Material? Acceptance criterion? Without these I risk incorrect revision.»",
+      "diplomatic": "«For quality WS-2200 attachment revision, kindly clarify load case, stringer material, and acceptance criterion. I shall record in design bureau minutes.»"
+    },
+    "phraseBank": [
+      {
+        "ru": "Какой расчётный случай нагрузки?",
+        "en": "Which design load case applies?"
+      },
+      {
+        "ru": "Какой критерий приёмки?",
+        "en": "What is the acceptance criterion?"
+      },
+      {
+        "ru": "Зафиксирую в протоколе.",
+        "en": "I shall record this in the minutes."
+      },
+      {
+        "ru": "Что именно изменилось в параметрах?",
+        "en": "What precisely changed in the parameters?"
+      },
+      {
+        "ru": "Без этих данных рискую некорректной доработкой.",
+        "en": "Without this data I risk incorrect revision."
+      }
+    ],
+    "technique": "Three Conversations framework (Stone)"
+  },
+  {
+    "id": "s4",
+    "title": "Мягкое несогласие",
+    "titleEn": "Soft Disagreement",
+    "books": [
+      "camp"
+    ],
+    "situation": "На совещании по компоновке SSJ100 коллега-конструктор предлагает перейти на монолитную схему крепления обшивки. Ваш расчёт показывает концентрацию напряжений.",
+    "situationEn": "At SSJ100 layout meeting, colleague proposes monolithic skin attachment. Your calculation shows stress concentration.",
+    "userRole": "Инженер-расчётчик",
+    "userRoleEn": "Stress Engineer",
+    "counterpartRole": "Конструктор",
+    "counterpartRoleEn": "Design Engineer",
+    "objective": "Выразить несогласие, сохранив рабочие отношения",
+    "objectiveEn": "Express disagreement while preserving working relations",
+    "constraints": "Коллега старше по стажу, присутствует руководитель группы",
+    "constraintsEn": "Colleague senior in tenure, group lead present",
+    "options": [
+      {
+        "text": "«Это решение ошибочно, расчёт это доказывает.»",
+        "textEn": "«This decision is wrong; the calculation proves it.»",
+        "feedback": "Прямая атака — эскалация.",
+        "feedbackEn": "Direct attack — escalation."
+      },
+      {
+        "text": "«Слышу аргументы в пользу монолитной схемы. Расчёт на срез показывает концентрацию 1,4 от допустимой. Предлагаю за три дня проработать вариант с накладкой.»",
+        "textEn": "«I hear arguments for monolithic scheme. Shear calculation shows concentration 1.4 above allowable. I propose three-day doubler variant development.»",
+        "feedback": "Camp: признание + факт + альтернатива с сроком.",
+        "feedbackEn": "Camp: acknowledgement + fact + alternative with timeline."
+      },
+      {
+        "text": "Промолчать, чтобы не конфликтовать.",
+        "textEn": "Remain silent to avoid conflict.",
+        "feedback": "Конструктивный риск остаётся неозвученным.",
+        "feedbackEn": "Design risk remains unvoiced."
+      }
+    ],
+    "recommended": {
+      "soft": "«Интересная идея с монолитной схемой. У меня есть данные по концентрации — могу показать после совещания?»",
+      "direct": "«Расчёт на срез: концентрация 1,4. Нужна проработка накладки.»",
+      "diplomatic": "«Слышу логику монолитной схемы с точки зрения технологичности. Расчёт выявил концентрацию напряжений. Предлагаю параллельную проработку накладки — три рабочих дня.»"
+    },
+    "recommendedEn": {
+      "soft": "«Interesting monolithic scheme idea. I have concentration data — may I share after the meeting?»",
+      "direct": "«Shear calculation: concentration 1.4. Doubler development required.»",
+      "diplomatic": "«I hear monolithic scheme logic regarding manufacturability. Calculation revealed stress concentration. I propose parallel doubler development — three working days.»"
+    },
+    "phraseBank": [
+      {
+        "ru": "Слышу вашу логику…",
+        "en": "I hear your logic…"
+      },
+      {
+        "ru": "При этом расчёт показывает…",
+        "en": "However, the calculation demonstrates…"
+      },
+      {
+        "ru": "Предлагаю параллельную проработку.",
+        "en": "I propose parallel development."
+      },
+      {
+        "ru": "Это займёт три рабочих дня.",
+        "en": "This will require three working days."
+      },
+      {
+        "ru": "Готов представить протокол расчёта.",
+        "en": "I am prepared to present the calculation protocol."
+      }
+    ],
+    "technique": "Decision without pressure (Camp)"
+  },
+  {
+    "id": "s5",
+    "title": "Эскалация риска",
+    "titleEn": "Risk Escalation",
+    "books": [
+      "voss"
+    ],
+    "situation": "Испытания FADEC на стенде задерживаются на две недели. Без верификации ПО milestone сертификации SSJ100 под угрозой. Нужно сообщить начальнику отдела.",
+    "situationEn": "FADEC bench tests delayed two weeks. Without software verification, SSJ100 certification milestone at risk. Must inform department head.",
+    "userRole": "Инженер по авионике",
+    "userRoleEn": "Avionics Engineer",
+    "counterpartRole": "Начальник отдела",
+    "counterpartRoleEn": "Department Head",
+    "objective": "Донести риск без паники, получить решение по приоритетам",
+    "objectiveEn": "Communicate risk without panic, obtain priority decision",
+    "constraints": "Начальник склонен к оптимизму по срокам",
+    "constraintsEn": "Head tends toward schedule optimism",
+    "options": [
+      {
+        "text": "«Мы всё потеряли, проект сорван!»",
+        "textEn": "«We have lost everything; the project is ruined!»",
+        "feedback": "Кatastrophisation — снижает доверие к сообщению.",
+        "feedbackEn": "Catastrophisation — reduces trust in message."
+      },
+      {
+        "text": "«Похоже, задержка стенда FADEC вызывает обеспокоенность. По графику — минус две недели на верификацию ПО. Варианты: резервный стенд или перенос milestone. Как вы видите приоритет?»",
+        "textEn": "«It appears FADEC bench delay is causing concern. Schedule impact: minus two weeks on software verification. Options: reserve bench or milestone deferral. How would you prioritise?»",
+        "feedback": "Labeling + факт + варианты + calibrated question. Voss.",
+        "feedbackEn": "Labeling + fact + options + calibrated question. Voss."
+      },
+      {
+        "text": "Не сообщать, пока ситуация не улучшится.",
+        "textEn": "Do not report until situation improves.",
+        "feedback": "Сокрытие риска — профессиональная ошибка в авиации.",
+        "feedbackEn": "Concealing risk — professional error in aviation."
+      }
+    ],
+    "recommended": {
+      "soft": "«Есть информация по стенду FADEC, которую важно обсудить. Когда удобно?»",
+      "direct": "«Стенд FADEC: −2 недели. Milestone под угрозой. Нужно решение по стенду или переносу.»",
+      "diplomatic": "«Похоже, задержка стенда FADEC создаёт риск для milestone сертификации. Минус две недели на верификацию. Предлагаю обсудить: резервный стенд или перенос milestone. Как вы видите приоритет?»"
+    },
+    "recommendedEn": {
+      "soft": "«There is FADEC bench information requiring discussion. When is convenient?»",
+      "direct": "«FADEC bench: −2 weeks. Milestone at risk. Decision on bench or deferral needed.»",
+      "diplomatic": "«It appears FADEC bench delay creates certification milestone risk. Minus two weeks on verification. Reserve bench or milestone deferral? How would you prioritise?»"
+    },
+    "phraseBank": [
+      {
+        "ru": "Похоже, это создаёт риск для…",
+        "en": "It appears this creates risk for…"
+      },
+      {
+        "ru": "По текущему графику…",
+        "en": "Under the current schedule…"
+      },
+      {
+        "ru": "Варианты: A или B.",
+        "en": "Options: A or B."
+      },
+      {
+        "ru": "Как вы видите приоритет?",
+        "en": "How would you prioritise?"
+      },
+      {
+        "ru": "Прошу принять решение до…",
+        "en": "I request a decision by…"
+      }
+    ],
+    "technique": "Labeling + Accusation audit (Voss)"
+  },
+  {
+    "id": "s6",
+    "title": "Переговоры по срокам",
+    "titleEn": "Timeline Negotiations",
+    "books": [
+      "camp",
+      "voss"
+    ],
+    "situation": "Служба сертификации запросила полный комплект КД по топливной системе SSJ100 к 15 июня. По текущему статусу — готовность 28 июня. Руководитель проекта требует «найти решение».",
+    "situationEn": "Certification requires full fuel system SSJ100 documentation by 15 June. Current readiness: 28 June. Project manager demands a solution.",
+    "userRole": "Ведущий конструктор",
+    "userRoleEn": "Lead Designer",
+    "counterpartRole": "Руководитель проекта",
+    "counterpartRoleEn": "Project Manager",
+    "objective": "Согласовать реалистичный график без необоснованных обязательств",
+    "objectiveEn": "Agree realistic schedule without unsubstantiated commitments",
+    "constraints": "Нельзя снижать качество КД; два инженера в отпуске",
+    "constraintsEn": "Cannot reduce documentation quality; two engineers on leave",
+    "options": [
+      {
+        "text": "«Хорошо, 15 июня сделаем.»",
+        "textEn": "«Very well, 15 June it is.»",
+        "feedback": "Необоснованное обязательство — конструктивный риск. Camp: «нет» без критериев.",
+        "feedbackEn": "Unsubstantiated commitment — design risk. Camp: «no» without criteria."
+      },
+      {
+        "text": "«Было бы неразумно обещать 15 июня без закрытия замечаний по герметичности. Варианты: промежуточный комплект 15 июня + полный 28 июня, или перенос milestone. Какой приоритет?»",
+        "textEn": "«Would it be unreasonable to promise 15 June without closing sealing remarks? Options: interim package 15 June + full 28 June, or milestone deferral. Which priority?»",
+        "feedback": "No-oriented question + варианты. Camp + Voss.",
+        "feedbackEn": "No-oriented question + options. Camp + Voss."
+      },
+      {
+        "text": "«Это невозможно, разговор окончен.»",
+        "textEn": "«This is impossible; discussion concluded.»",
+        "feedback": "Ультimatum без альтернатив — тупик.",
+        "feedbackEn": "Ultimatum without alternatives — deadlock."
+      }
+    ],
+    "recommended": {
+      "soft": "«Понимаю важность 15 июня для сертификации. Давайте обсудим, что реально войдёт в промежуточный комплект.»",
+      "direct": "«15 июня — промежуточный комплект. Полный — 28 июня. Два инженера в отпуске.»",
+      "diplomatic": "«Было бы неразумно обещать полный комплект 15 июня при двух инженерах в отпуске. Предлагаю: промежуточный комплект к 15 июня с ограничением по конфигурации, полный — 28 июня. Как вы видите приоритет?»"
+    },
+    "recommendedEn": {
+      "soft": "«I understand 15 June significance for certification. Let us discuss interim package contents.»",
+      "direct": "«15 June — interim package. Full — 28 June. Two engineers on leave.»",
+      "diplomatic": "«Would it be unreasonable to promise full package 15 June with two engineers on leave? Interim by 15 June, full by 28 June. How would you prioritise?»"
+    },
+    "phraseBank": [
+      {
+        "ru": "Было бы неразумно…",
+        "en": "Would it be unreasonable to…"
+      },
+      {
+        "ru": "Промежуточный комплект КД к…",
+        "en": "Interim documentation package by…"
+      },
+      {
+        "ru": "Без закрытия замечаний по…",
+        "en": "Without closing remarks on…"
+      },
+      {
+        "ru": "Какой вариант приоритетен?",
+        "en": "Which option is prioritised?"
+      },
+      {
+        "ru": "Готов представить детальный график.",
+        "en": "I am prepared to present detailed schedule."
+      }
+    ],
+    "technique": "No-oriented questions (Camp) + Options framing (Voss)"
+  }
+] };
+</script>
+<script>
+(function () {
+  'use strict';
+
+  const STORAGE_KEYS = {
+    completedLessons: 'vykb_completedLessons',
+    savedAnswers: 'vykb_savedAnswers',
+    scenarioAnswers: 'vykb_scenarioAnswers',
+    settings: 'vykb_settings',
+    progress: 'vykb_progress'
+  };
+
+  const SKILL_TAGS = ['Refusal', 'Clarification', 'Disagreement', 'Argumentation', 'Summarizing', 'Voice', 'Difficult talk'];
+
+  let state = {
+    currentScreen: 'home',
+    currentLesson: null,
+    currentScenario: null,
+    scenarioMode: 'diplomatic',
+    currentAskResult: null,
+    voicesLoaded: false,
+    britishVoice: null
+  };
+
+  const defaultSettings = {
+    largeText: false,
+    highContrast: false,
+    reducedMotion: false,
+    readAloud: true,
+    languageMode: 'ru',
+    contentLang: 'ru'
+  };
+
+  function loadJSON(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function saveJSON(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function getSettings() {
+    return Object.assign({}, defaultSettings, loadJSON(STORAGE_KEYS.settings, {}));
+  }
+
+  function getProgress() {
+    return Object.assign({ weeklyGoal: 3, weeklyDone: 0, streak: 1, lastVisit: null }, loadJSON(STORAGE_KEYS.progress, {}));
+  }
+
+  function getCompletedLessons() {
+    return loadJSON(STORAGE_KEYS.completedLessons, []);
+  }
+
+  function getSavedAnswers() {
+    return loadJSON(STORAGE_KEYS.savedAnswers, []);
+  }
+
+  function getScenarioAnswers() {
+    return loadJSON(STORAGE_KEYS.scenarioAnswers, {});
+  }
+
+  function t(ru, en) {
+    const s = getSettings();
+    const lang = s.contentLang || 'ru';
+    if (lang === 'en') return en || ru;
+    if (s.languageMode === 'ru+en' && en) {
+      return ru + '<div class="en-block">' + en + '</div>';
+    }
+    return ru;
+  }
+
+  function bookBadge(bookId) {
+    const b = BOOKS[bookId];
+    if (!b) return '';
+    return '<div class="book-badge"><strong>Матчасть:</strong> ' + b.author + ' — «' + b.title + '»<br><em>' + b.keyIdea + '</em></div>';
+  }
+
+  function booksBadges(ids) {
+    return ids.map(id => bookBadge(id)).join('');
+  }
+
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(function () { el.classList.remove('show'); }, 2500);
+  }
+
+  function calcProgressPercent() {
+    const lessons = getCompletedLessons().length;
+    const scenarios = Object.keys(getScenarioAnswers()).length;
+    return Math.round(((lessons / 10) + (scenarios / 6)) / 2 * 100);
+  }
+
+  function updateStreak() {
+    const p = getProgress();
+    const today = new Date().toISOString().slice(0, 10);
+    if (p.lastVisit === today) return;
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    if (p.lastVisit === yesterday) p.streak = (p.streak || 1) + 1;
+    else if (p.lastVisit !== today) p.streak = 1;
+    p.lastVisit = today;
+    saveJSON(STORAGE_KEYS.progress, p);
+  }
+
+  function applySettings() {
+    const s = getSettings();
+    document.body.classList.toggle('large-text', s.largeText);
+    document.body.classList.toggle('high-contrast', s.highContrast);
+    document.body.classList.toggle('reduced-motion', s.reducedMotion);
+    const toggle = document.getElementById('langToggle');
+    if (toggle) toggle.textContent = (s.contentLang === 'en') ? 'EN' : 'RU';
+  }
+
+  function wrapCriticalWords(text, words) {
+    if (!words || !words.length) return text;
+    const s = getSettings();
+    if (s.contentLang !== 'en' && s.languageMode !== 'ru+en') return text;
+    let result = text;
+    words.forEach(function (w) {
+      const re = new RegExp('\\b(' + w.word + ')\\b', 'gi');
+      result = result.replace(re, function (match) {
+        return '<button type="button" class="word-chip" data-word="' + w.word + '" data-ipa="' + w.ipa + '">' + match + '</button>';
+      });
+    });
+    return result;
+  }
+
+  function initSpeech() {
+    if (!('speechSynthesis' in window)) {
+      const banner = document.getElementById('speech-banner');
+      banner.style.display = 'block';
+      banner.textContent = 'Озвучка недоступна: ваш браузер не поддерживает Web Speech API.';
+      return;
+    }
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices();
+      state.britishVoice = voices.find(function (v) { return v.lang.startsWith('en-GB'); })
+        || voices.find(function (v) { return /UK|British|Daniel|Samantha/i.test(v.name); })
+        || voices.find(function (v) { return v.lang.startsWith('en'); });
+      state.voicesLoaded = true;
+      const banner = document.getElementById('speech-banner');
+      if (getSettings().contentLang === 'en' && state.britishVoice && !state.britishVoice.lang.startsWith('en-GB')) {
+        banner.style.display = 'block';
+        banner.textContent = 'Британский голос недоступен в вашем браузере; используется резервный English voice.';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function speak(text, lang) {
+    const s = getSettings();
+    if (!s.readAloud || !('speechSynthesis' in window)) return;
+    const clean = text.replace(/<[^>]+>/g, '');
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(clean);
+    const isEn = lang === 'en' || (lang !== 'ru' && getSettings().contentLang === 'en');
+    u.lang = isEn ? 'en-GB' : 'ru-RU';
+    if (isEn && state.britishVoice) u.voice = state.britishVoice;
+    u.rate = 0.92;
+    speechSynthesis.speak(u);
+  }
+
+  function showWordPopover(word, ipa, x, y) {
+    const pop = document.getElementById('word-popover');
+    document.getElementById('popover-word').textContent = word;
+    document.getElementById('popover-ipa').textContent = ipa;
+    pop.hidden = false;
+    pop.style.left = Math.min(x, window.innerWidth - 220) + 'px';
+    pop.style.top = Math.max(y - 80, 60) + 'px';
+    pop.dataset.word = word;
+  }
+
+  document.getElementById('popover-speak').addEventListener('click', function () {
+    const w = document.getElementById('word-popover').dataset.word;
+    if (w) speak(w, 'en');
+  });
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('word-chip')) {
+      e.preventDefault();
+      showWordPopover(e.target.dataset.word, e.target.dataset.ipa, e.clientX, e.clientY);
+      speak(e.target.dataset.word, 'en');
+    } else if (!e.target.closest('#word-popover')) {
+      document.getElementById('word-popover').hidden = true;
+    }
+  });
+
+  function showScreen(id) {
+    state.currentScreen = id;
+    document.querySelectorAll('.screen').forEach(function (el) {
+      el.classList.toggle('active', el.id === 'screen-' + id);
+    });
+    document.querySelectorAll('nav.main-nav button').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.screen === id);
+    });
+    renderScreen(id);
+    window.scrollTo(0, 0);
+  }
+
+  function renderScreen(id) {
+    const map = { home: renderHome, ask: renderAsk, learn: renderLearn, practice: renderPractice, progress: renderProgress, settings: renderSettings };
+    if (map[id]) map[id]();
+  }
+
+  function renderHome() {
+    const pct = calcProgressPercent();
+    const completed = getCompletedLessons();
+    const nextLesson = DATA.lessons.find(function (l) { return completed.indexOf(l.id) === -1; });
+    const p = getProgress();
+    document.getElementById('screen-home').innerHTML =
+      '<div class="card"><h2>VoiceYour KB — деловая коммуникация SSJ100</h2>' +
+      '<p>' + t('Краткие практики делового общения для конструкторов и инженёров Конструкторского Бюро гражданского самолёта SSJ100.', 'Concise business communication practice for SSJ100 civil aircraft design bureau engineers and designers.') + '</p></div>' +
+      '<div class="home-cards">' +
+      '<div class="home-card" data-go="ask"><div class="icon">💬</div><strong>Спросить</strong><p>' + t('Ответы по коммуникации', 'Communication answers') + '</p></div>' +
+      '<div class="home-card" data-go="learn"><div class="icon">📖</div><strong>Изучить</strong><p>' + t('10 микроуроков', '10 micro-lessons') + '</p></div>' +
+      '<div class="home-card" data-go="practice"><div class="icon">🎯</div><strong>Отработать</strong><p>' + t('6 сценариев', '6 scenarios') + '</p></div></div>' +
+      '<div class="card"><h3>' + t('Недельная цель', 'Weekly goal') + '</h3><p>' + p.weeklyDone + ' / ' + p.weeklyGoal + ' ' + t('занятий', 'sessions') + '</p>' +
+      '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:' + Math.min(100, pct) + '%"></div></div>' +
+      '<p><strong>' + pct + '%</strong> ' + t('общего прогресса', 'overall progress') + '</p></div>' +
+      '<div class="card"><h3>' + t('Продолжить обучение', 'Continue learning') + '</h3>' +
+      (nextLesson ? '<p>' + t('Следующий урок:', 'Next lesson:') + ' <strong>' + (getSettings().contentLang === 'en' ? nextLesson.titleEn : nextLesson.title) + '</strong></p>' +
+        '<button class="btn btn-primary" id="continueBtn">' + t('Перейти к уроку', 'Go to lesson') + '</button>' :
+        '<p>' + t('Все уроки завершены! Перейдите к сценариям.', 'All lessons complete! Proceed to scenarios.') + '</p>') + '</div>';
+
+    document.querySelectorAll('.home-card').forEach(function (c) {
+      c.onclick = function () { showScreen(c.dataset.go); };
+    });
+    const cb = document.getElementById('continueBtn');
+    if (cb && nextLesson) {
+      cb.onclick = function () { state.currentLesson = nextLesson.id; showScreen('learn'); renderLessonDetail(nextLesson.id); };
+    }
+  }
+
+  function renderAsk() {
+    document.getElementById('screen-ask').innerHTML =
+      '<div class="card"><h2>' + t('Спросить', 'Ask') + '</h2>' +
+      '<p>' + t('Задайте вопрос о деловой коммуникации в КБ SSJ100.', 'Ask about business communication in the SSJ100 design bureau.') + '</p>' +
+      '<input type="text" id="askInput" placeholder="' + t('Например: как отказать в срочной доработке КД?', 'E.g.: how to refuse urgent documentation revision?') + '">' +
+      '<button class="btn btn-primary btn-block" id="askSubmit">' + t('Получить ответ', 'Get answer') + '</button>' +
+      '<div id="askResult"></div></div>';
+
+    document.getElementById('askSubmit').onclick = submitAsk;
+    document.getElementById('askInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAsk(); });
+  }
+
+  function submitAsk() {
+    const q = document.getElementById('askInput').value.trim().toLowerCase();
+    if (!q) { toast(t('Введите вопрос', 'Enter a question')); return; }
+    let best = null, bestScore = 0;
+    DATA.ask.forEach(function (a) {
+      let score = 0;
+      a.keywords.forEach(function (kw) { if (q.indexOf(kw) !== -1) score++; });
+      if (score > bestScore) { bestScore = score; best = a; }
+    });
+    if (!best || bestScore === 0) best = DATA.ask[0];
+    state.currentAskResult = best;
+    const lang = getSettings().contentLang;
+    const ans = lang === 'en' ? best.answerEn : best.answer;
+    const src = BOOKS[best.source];
+    document.getElementById('askResult').innerHTML =
+      '<div class="card" style="margin-top:16px"><h3>' + t('Ответ', 'Answer') + '</h3>' +
+      '<p>' + ans + '</p>' + bookBadge(best.source) +
+      '<p><span class="tag">' + t('Источник', 'Source') + ': ' + src.author + '</span>' +
+      '<span class="confidence confidence-' + best.confidence + '">' + best.confidence + '</span></p>' +
+      '<p><small>' + t('Версия', 'Version') + ' ' + best.version + ' · ' + best.date + '</small></p>' +
+      '<p><em>' + best.fragmentPreview + '</em></p>' +
+      '<button class="btn btn-secondary btn-sm" id="askSpeak">🔊 ' + t('Озвучить', 'Read aloud') + '</button> ' +
+      '<button class="btn btn-primary btn-sm" id="askSave">' + t('Сохранить', 'Save') + '</button> ' +
+      '<button class="btn btn-outline btn-sm" id="askLesson">' + t('Сделать микроурок из ответа', 'Create micro-lesson') + '</button></div>';
+
+    document.getElementById('askSpeak').onclick = function () { speak(ans, lang); };
+    document.getElementById('askSave').onclick = function () {
+      const saved = getSavedAnswers();
+      if (!saved.find(function (s) { return s.id === best.id; })) {
+        saved.push({ id: best.id, question: best.question, answer: best.answer, date: new Date().toISOString() });
+        saveJSON(STORAGE_KEYS.savedAnswers, saved);
+      }
+      toast(t('Ответ сохранён', 'Answer saved'));
+    };
+    document.getElementById('askLesson').onclick = function () {
+      toast(t('Переход к разделу «Изучить»', 'Opening Learn section'));
+      showScreen('learn');
+    };
+  }
+
+  function renderLearn() {
+    if (state.currentLesson) { renderLessonDetail(state.currentLesson); return; }
+    const completed = getCompletedLessons();
+    const lang = getSettings().contentLang;
+    let list = '<div class="card"><h2>' + t('Изучить', 'Learn') + '</h2><ul class="lesson-list">';
+    DATA.lessons.forEach(function (l) {
+      const done = completed.indexOf(l.id) !== -1;
+      list += '<li data-lesson="' + l.id + '" class="' + (done ? 'done' : '') + '"><span>' + (lang === 'en' ? l.titleEn : l.title) + '</span><span class="tag">' + l.skillTag + '</span></li>';
+    });
+    list += '</ul></div>';
+    document.getElementById('screen-learn').innerHTML = list;
+    document.querySelectorAll('[data-lesson]').forEach(function (li) {
+      li.onclick = function () { state.currentLesson = li.dataset.lesson; renderLessonDetail(li.dataset.lesson); };
+    });
+  }
+
+  function renderLessonDetail(id) {
+    const l = DATA.lessons.find(function (x) { return x.id === id; });
+    if (!l) return;
+    const lang = getSettings().contentLang;
+    const title = lang === 'en' ? l.titleEn : l.title;
+    const expl = lang === 'en' ? l.explanationEn : l.explanation;
+    const keyIdea = lang === 'en' ? l.keyIdeaEn : l.keyIdea;
+    let qHtml = '';
+    l.questions.forEach(function (q, qi) {
+      const qText = lang === 'en' ? q.qEn : q.q;
+      const opts = lang === 'en' ? q.optsEn : q.opts;
+      qHtml += '<div class="quiz-q" data-q="' + qi + '"><p><strong>' + (qi + 1) + '.</strong> ' + qText + '</p>';
+      opts.forEach(function (opt, oi) {
+        qHtml += '<button type="button" class="option-btn" data-q="' + qi + '" data-opt="' + oi + '">' + opt + '</button>';
+      });
+      qHtml += '</div>';
+    });
+    const formBad = l.formulation.bad;
+    const formGood = l.formulation.good;
+    document.getElementById('screen-learn').innerHTML =
+      '<div class="card"><button class="btn btn-secondary btn-sm" id="backLearn">← ' + t('К списку', 'Back to list') + '</button>' +
+      '<h2>' + title + '</h2><span class="tag">' + l.skillTag + '</span>' +
+      booksBadges(l.books) +
+      '<h3>' + t('Ключевая идея', 'Key idea') + '</h3><p>' + keyIdea + '</p>' +
+      '<h3>' + t('Объяснение', 'Explanation') + '</h3><p>' + wrapCriticalWords(expl, l.criticalWords) + '</p>' +
+      '<pre class="schema">' + l.schema + '</pre>' +
+      '<h3>' + t('Проверка', 'Retrieval practice') + '</h3>' + qHtml +
+      '<h3>' + t('Мини-кейс', 'Mini-case') + '</h3><p>' + (lang === 'en' ? l.miniCaseEn : l.miniCase) + '</p>' +
+      '<h3>' + t('Упражнение: переформулировка', 'Formulation exercise') + '</h3>' +
+      '<p><strong>✗</strong> ' + formBad + '</p><p><strong>✓</strong> ' + formGood + '</p>' +
+      '<button class="btn btn-secondary" id="lessonSpeak">🔊 ' + t('Озвучить', 'Read aloud') + '</button> ' +
+      '<button class="btn btn-primary" id="completeLesson">' + t('Завершить урок', 'Complete lesson') + '</button></div>';
+
+    document.getElementById('backLearn').onclick = function () { state.currentLesson = null; renderLearn(); };
+    document.getElementById('lessonSpeak').onclick = function () { speak(title + '. ' + expl, lang); };
+    document.getElementById('completeLesson').onclick = function () {
+      const c = getCompletedLessons();
+      if (c.indexOf(id) === -1) c.push(id);
+      saveJSON(STORAGE_KEYS.completedLessons, c);
+      const p = getProgress();
+      p.weeklyDone = Math.min(p.weeklyGoal, (p.weeklyDone || 0) + 1);
+      saveJSON(STORAGE_KEYS.progress, p);
+      toast(t('Урок завершён', 'Lesson completed'));
+      state.currentLesson = null;
+      renderLearn();
+    };
+    document.querySelectorAll('.option-btn').forEach(function (btn) {
+      btn.onclick = function () {
+        const qi = parseInt(btn.dataset.q, 10);
+        const oi = parseInt(btn.dataset.opt, 10);
+        const qEl = document.querySelector('.quiz-q[data-q="' + qi + '"]');
+        qEl.querySelectorAll('.option-btn').forEach(function (b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        const correct = l.questions[qi].correct;
+        qEl.classList.remove('correct', 'incorrect');
+        qEl.classList.add(oi === correct ? 'correct' : 'incorrect');
+      };
+    });
+  }
+
+  function renderPractice() {
+    if (state.currentScenario) { renderScenarioDetail(state.currentScenario); return; }
+    const lang = getSettings().contentLang;
+    let list = '<div class="card"><h2>' + t('Отработать', 'Practice') + '</h2><ul class="scenario-list">';
+    DATA.scenarios.forEach(function (s) {
+      list += '<li data-scenario="' + s.id + '"><span>' + (lang === 'en' ? s.titleEn : s.title) + '</span></li>';
+    });
+    list += '</ul></div>';
+    document.getElementById('screen-practice').innerHTML = list;
+    document.querySelectorAll('[data-scenario]').forEach(function (li) {
+      li.onclick = function () { state.currentScenario = li.dataset.scenario; renderScenarioDetail(li.dataset.scenario); };
+    });
+  }
+
+  function renderScenarioDetail(id) {
+    const s = DATA.scenarios.find(function (x) { return x.id === id; });
+    if (!s) return;
+    const lang = getSettings().contentLang;
+    const mode = state.scenarioMode;
+    let optHtml = '';
+    s.options.forEach(function (o, i) {
+      optHtml += '<button type="button" class="option-btn scenario-opt" data-i="' + i + '">' + (lang === 'en' ? o.textEn : o.text) + '</button><div class="feedback hidden" data-fb="' + i + '"></div>';
+    });
+    let phrases = '';
+    s.phraseBank.forEach(function (p) {
+      phrases += '<li>' + p.ru + (getSettings().languageMode === 'ru+en' || lang === 'en' ? '<div class="en">' + p.en + '</div>' : '') + '</li>';
+    });
+    const rec = s.recommended[mode];
+    const recEn = s.recommendedEn[mode];
+    document.getElementById('screen-practice').innerHTML =
+      '<div class="card"><button class="btn btn-secondary btn-sm" id="backPractice">← ' + t('К списку', 'Back') + '</button>' +
+      '<h2>' + (lang === 'en' ? s.titleEn : s.title) + '</h2>' + booksBadges(s.books) +
+      '<p><strong>' + t('Техника', 'Technique') + ':</strong> ' + s.technique + '</p>' +
+      '<h3>' + t('Ситуация', 'Situation') + '</h3><p>' + (lang === 'en' ? s.situationEn : s.situation) + '</p>' +
+      '<p><strong>' + t('Ваша роль', 'Your role') + ':</strong> ' + (lang === 'en' ? s.userRoleEn : s.userRole) + '</p>' +
+      '<p><strong>' + t('Собеседник', 'Counterpart') + ':</strong> ' + (lang === 'en' ? s.counterpartRoleEn : s.counterpartRole) + '</p>' +
+      '<p><strong>' + t('Цель', 'Objective') + ':</strong> ' + (lang === 'en' ? s.objectiveEn : s.objective) + '</p>' +
+      '<p><strong>' + t('Ограничения', 'Constraints') + ':</strong> ' + (lang === 'en' ? s.constraintsEn : s.constraints) + '</p>' +
+      '<div class="mode-tabs"><button class="mode-tab' + (mode === 'soft' ? ' active' : '') + '" data-mode="soft">' + t('Мягкий', 'Soft') + '</button>' +
+      '<button class="mode-tab' + (mode === 'direct' ? ' active' : '') + '" data-mode="direct">' + t('Прямой', 'Direct') + '</button>' +
+      '<button class="mode-tab' + (mode === 'diplomatic' ? ' active' : '') + '" data-mode="diplomatic">' + t('Дипломатичный', 'Diplomatic') + '</button></div>' +
+      '<h3>' + t('Выберите ответ', 'Choose response') + '</h3>' + optHtml +
+      '<h3>' + t('Рекомендуемый ответ', 'Recommended answer') + ' (' + mode + ')</h3><p>' + rec + '</p>' +
+      (getSettings().languageMode === 'ru+en' ? '<div class="en-block">' + recEn + '</div>' : '') +
+      '<h3>' + t('Банк фраз', 'Phrase bank') + '</h3><ul class="phrase-bank">' + phrases + '</ul>' +
+      '<button class="btn btn-primary" id="saveScenario">' + t('Сохранить лучший ответ', 'Save best answer') + '</button></div>';
+
+    document.getElementById('backPractice').onclick = function () { state.currentScenario = null; renderPractice(); };
+    document.querySelectorAll('.mode-tab').forEach(function (tab) {
+      tab.onclick = function () { state.scenarioMode = tab.dataset.mode; renderScenarioDetail(id); };
+    });
+    document.querySelectorAll('.scenario-opt').forEach(function (btn) {
+      btn.onclick = function () {
+        const i = parseInt(btn.dataset.i, 10);
+        const fb = lang === 'en' ? s.options[i].feedbackEn : s.options[i].feedback;
+        document.querySelectorAll('.feedback').forEach(function (f) { f.classList.add('hidden'); });
+        const fel = document.querySelector('.feedback[data-fb="' + i + '"]');
+        fel.textContent = fb;
+        fel.classList.remove('hidden');
+      };
+    });
+    document.getElementById('saveScenario').onclick = function () {
+      const ans = getScenarioAnswers();
+      ans[id] = { mode: mode, text: rec, date: new Date().toISOString() };
+      saveJSON(STORAGE_KEYS.scenarioAnswers, ans);
+      toast(t('Ответ сохранён', 'Answer saved'));
+    };
+  }
+
+  function renderProgress() {
+    const pct = calcProgressPercent();
+    const completed = getCompletedLessons();
+    const saved = getSavedAnswers();
+    const scenarios = getScenarioAnswers();
+    const p = getProgress();
+    let skills = '';
+    SKILL_TAGS.forEach(function (sk) {
+      const lessonDone = DATA.lessons.some(function (l) { return l.skillTag === sk && completed.indexOf(l.id) !== -1; });
+      skills += '<div class="skill-item' + (lessonDone ? ' complete' : '') + '">' + sk + '</div>';
+    });
+    const nextLesson = DATA.lessons.find(function (l) { return completed.indexOf(l.id) === -1; });
+    const nextScenario = DATA.scenarios.find(function (s) { return !scenarios[s.id]; });
+    document.getElementById('screen-progress').innerHTML =
+      '<div class="card"><h2>' + t('Прогресс', 'Progress') + '</h2>' +
+      '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '<p><strong>' + pct + '%</strong></p>' +
+      '<p>' + t('Завершено уроков', 'Lessons completed') + ': ' + completed.length + ' / 10</p>' +
+      '<p>' + t('Сохранённых ответов', 'Saved answers') + ': ' + saved.length + '</p>' +
+      '<p>' + t('Сценариев отработано', 'Scenarios practiced') + ': ' + Object.keys(scenarios).length + ' / 6</p>' +
+      '<p>' + t('Недельная цель', 'Weekly goal') + ': ' + p.weeklyDone + ' / ' + p.weeklyGoal + '</p>' +
+      '<p>' + t('Серия (streak)', 'Streak') + ': ' + (p.streak || 1) + ' ' + t('дн.', 'days') + '</p></div>' +
+      '<div class="card"><h3>' + t('Карта навыков', 'Skill map') + '</h3><div class="skill-map">' + skills + '</div></div>' +
+      '<div class="card"><h3>' + t('Следующее действие', 'Next recommended action') + '</h3>' +
+      (nextLesson ? '<p>' + t('Урок', 'Lesson') + ': ' + nextLesson.title + '</p><button class="btn btn-primary" id="goLesson">' + t('Начать', 'Start') + '</button>' :
+        nextScenario ? '<p>' + t('Сценарий', 'Scenario') + ': ' + nextScenario.title + '</p><button class="btn btn-primary" id="goScenario">' + t('Начать', 'Start') + '</button>' :
+          '<p>' + t('Отличная работа! Повторите сложные сценарии.', 'Excellent! Review challenging scenarios.') + '</p>') + '</div>';
+
+    const gl = document.getElementById('goLesson');
+    if (gl) gl.onclick = function () { state.currentLesson = nextLesson.id; showScreen('learn'); };
+    const gs = document.getElementById('goScenario');
+    if (gs) gs.onclick = function () { state.currentScenario = nextScenario.id; showScreen('practice'); };
+  }
+
+  function renderSettings() {
+    const s = getSettings();
+    document.getElementById('screen-settings').innerHTML =
+      '<div class="card"><h2>' + t('Настройки', 'Settings') + '</h2>' +
+      toggleRow(t('Крупный текст', 'Large text'), 'largeText', s.largeText) +
+      toggleRow(t('Высокий контраст', 'High contrast'), 'highContrast', s.highContrast) +
+      toggleRow(t('Уменьшить анимацию', 'Reduced motion'), 'reducedMotion', s.reducedMotion) +
+      toggleRow(t('Озвучка', 'Read-aloud'), 'readAloud', s.readAloud) +
+      '<div class="toggle-row"><span>' + t('Режим языка', 'Language mode') + '</span>' +
+      '<select id="langMode"><option value="ru"' + (s.languageMode === 'ru' ? ' selected' : '') + '>RU</option>' +
+      '<option value="en"' + (s.languageMode === 'en' ? ' selected' : '') + '>EN</option>' +
+      '<option value="ru+en"' + (s.languageMode === 'ru+en' ? ' selected' : '') + '>RU+EN</option></select></div></div>';
+
+    document.querySelectorAll('.toggle').forEach(function (tog) {
+      tog.onclick = function () {
+        const key = tog.dataset.key;
+        const settings = getSettings();
+        settings[key] = !settings[key];
+        saveJSON(STORAGE_KEYS.settings, settings);
+        applySettings();
+        renderSettings();
+      };
+    });
+    document.getElementById('langMode').onchange = function (e) {
+      const settings = getSettings();
+      settings.languageMode = e.target.value;
+      settings.contentLang = e.target.value === 'en' ? 'en' : 'ru';
+      saveJSON(STORAGE_KEYS.settings, settings);
+      applySettings();
+      renderScreen(state.currentScreen);
+    };
+  }
+
+  function toggleRow(label, key, on) {
+    return '<div class="toggle-row"><span>' + label + '</span><button type="button" class="toggle' + (on ? ' on' : '') + '" data-key="' + key + '" aria-pressed="' + on + '"></button></div>';
+  }
+
+  document.querySelectorAll('nav.main-nav button').forEach(function (btn) {
+    btn.addEventListener('click', function () { showScreen(btn.dataset.screen); });
+  });
+
+  document.getElementById('langToggle').addEventListener('click', function () {
+    const settings = getSettings();
+    settings.contentLang = settings.contentLang === 'en' ? 'ru' : 'en';
+    if (settings.contentLang === 'en') settings.languageMode = 'en';
+    else if (settings.languageMode === 'en') settings.languageMode = 'ru';
+    saveJSON(STORAGE_KEYS.settings, settings);
+    applySettings();
+    initSpeech();
+    renderScreen(state.currentScreen);
+  });
+
+  updateStreak();
+  applySettings();
+  initSpeech();
+  renderHome();
+})();
+
+</script>
+</body>
+</html>

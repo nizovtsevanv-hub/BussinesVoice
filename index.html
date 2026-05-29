@@ -1,0 +1,1139 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BusinessVoice — корпоративный learning companion: IT, продукт, внедрение." />
+  <title>BusinessVoice — Learning Companion</title>
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --card: #ffffff;
+      --text: #3d3832;
+      --muted: #6b6560;
+      --border: #e8e4dd;
+      --primary: #4f6bed;
+      --primary-dark: #4358d4;
+      --primary-light: #eef2ff;
+      --lavender: #f0edf8;
+      --sand: #f5f0e8;
+      --success: #4a9b6e;
+      --success-bg: #e8f5ee;
+      --warning: #d4a017;
+      --warning-bg: #fef6e4;
+      --danger: #c45c5c;
+      --danger-bg: #fceeee;
+      --shadow: 0 1px 3px rgb(61 56 50 / 6%), 0 4px 12px rgb(61 56 50 / 4%);
+      --radius: 16px;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 16px;
+    }
+    body.large-text { font-size: 18px; }
+    body.high-contrast { --bg: #fff; --card: #fff; --text: #000; --border: #000; --muted: #222; }
+    body.high-contrast .card { border: 2px solid #000; box-shadow: none; }
+    body.reduced-motion * { animation: none !important; transition: none !important; }
+    body.large-buttons .btn, body.large-buttons .nav-link { min-height: 48px; padding: 12px 20px; }
+    .app-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px;
+    }
+    .brand-title { font-weight: 700; font-size: 1.1rem; }
+    .brand-sub { font-size: 0.75rem; color: var(--muted); }
+    .tagline { display: none; font-size: 0.8rem; color: var(--muted); }
+    @media (min-width: 768px) { .tagline { display: block; } }
+    nav.main-nav {
+      display: flex; gap: 4px; overflow-x: auto;
+      padding: 8px 16px 10px;
+      max-width: 1100px; margin: 0 auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav-link {
+      flex-shrink: 0;
+      padding: 8px 14px; border-radius: 10px;
+      text-decoration: none; color: var(--muted);
+      font-size: 0.875rem; font-weight: 500;
+      border: none; background: transparent; cursor: pointer;
+      font-family: inherit;
+    }
+    .nav-link:hover { background: var(--sand); color: var(--text); }
+    .nav-link.active { background: var(--primary); color: #fff; }
+    main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
+    .view { display: none; }
+    .view.active { display: block; }
+    h1 { font-size: 1.75rem; margin: 0 0 8px; }
+    h2 { font-size: 1.25rem; margin: 0 0 12px; }
+    h3 { font-size: 1.05rem; margin: 0 0 8px; }
+    .lead { color: var(--muted); margin: 0 0 24px; max-width: 640px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .grid-3 { display: grid; gap: 16px; }
+    @media (min-width: 768px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+    .grid-2 { display: grid; gap: 16px; }
+    @media (min-width: 640px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+    .action-card {
+      display: block; text-decoration: none; color: inherit;
+      padding: 24px; border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--primary-light), #fff);
+      transition: box-shadow .2s;
+    }
+    .action-card:hover { box-shadow: 0 8px 24px rgb(61 56 50 / 8%); }
+    .action-card.sand { background: linear-gradient(135deg, var(--sand), #fff); }
+    .action-card.lavender { background: linear-gradient(135deg, var(--lavender), #fff); }
+    .action-card h2 { margin-bottom: 8px; color: var(--primary-dark); }
+    .action-card p { font-size: 0.9rem; color: var(--muted); margin: 0 0 12px; }
+    .action-card .link { font-size: 0.875rem; font-weight: 600; color: var(--primary); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; border-radius: 12px;
+      font-size: 0.9375rem; font-weight: 600;
+      border: 1px solid var(--border);
+      background: #fff; color: var(--text);
+      cursor: pointer; font-family: inherit;
+      text-decoration: none;
+    }
+    .btn:hover { border-color: var(--primary); background: var(--primary-light); }
+    .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-success { background: var(--success-bg); color: var(--success); border-color: transparent; }
+    .btn-block { width: 100%; }
+    .progress-bar { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 99px; transition: width .3s; }
+    .progress-fill.green { background: var(--success); }
+    .badge {
+      display: inline-block; padding: 4px 10px; border-radius: 8px;
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .badge-primary { background: var(--primary-light); color: var(--primary-dark); }
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-sand { background: var(--sand); color: var(--text); }
+    input[type="text"], textarea, select {
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      border: 1px solid var(--border); font-family: inherit; font-size: 1rem;
+      margin-top: 8px;
+    }
+    input:focus, textarea:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip {
+      padding: 6px 12px; border-radius: 99px; font-size: 0.8rem;
+      border: 1px solid var(--border); background: var(--sand);
+      cursor: pointer; font-family: inherit;
+    }
+    .chip:hover { border-color: var(--primary); }
+    .option-btn {
+      display: block; width: 100%; text-align: left;
+      padding: 14px 16px; margin-bottom: 8px;
+      border-radius: 12px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; font-family: inherit; font-size: 0.9rem;
+    }
+    .option-btn:hover { border-color: var(--primary); }
+    .option-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+    .option-btn.correct { border-color: var(--success); background: var(--success-bg); }
+    .option-btn.wrong { border-color: var(--danger); background: var(--danger-bg); }
+    .stat-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 640px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat-card { padding: 16px; }
+    .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .stat-value { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+    .skill-row { margin-bottom: 12px; }
+    .skill-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; }
+    .hidden { display: none !important; }
+    .mt-1 { margin-top: 8px; } .mt-2 { margin-top: 16px; } .mt-3 { margin-top: 24px; }
+    .flex-wrap { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .lesson-step { padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; background: var(--border); color: var(--muted); }
+    .lesson-step.done { background: var(--primary); color: #fff; }
+    .phrase-item { padding: 12px; background: var(--sand); border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; }
+    .industry-tag { font-size: 0.7rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .back-link { color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--text); color: #fff; padding: 12px 20px;
+      border-radius: 12px; font-size: 0.875rem; z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <a href="#" class="brand" data-nav="home">
+        <div class="brand-icon">BV</div>
+        <div>
+          <div class="brand-title">BusinessVoice</div>
+          <div class="brand-sub">IT · Product · Delivery</div>
+        </div>
+      </a>
+      <span class="tagline">Trust · Learning · Practice · Progress</span>
+    </div>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <button type="button" class="nav-link active" data-nav="home">Главная</button>
+      <button type="button" class="nav-link" data-nav="ask">Спросить</button>
+      <button type="button" class="nav-link" data-nav="learn">Изучить</button>
+      <button type="button" class="nav-link" data-nav="practice">Отработать</button>
+      <button type="button" class="nav-link" data-nav="progress">Прогресс</button>
+      <button type="button" class="nav-link" data-nav="settings">Настройки</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="view-home" class="view active">
+      <h1>Корпоративный learning companion</h1>
+      <p class="lead">Для команд IT, цифрового продукта и внедрения: переговоры, сложные разговоры, уточнение требований, защита решений и профессиональный английский — без тяжёлой LMS.</p>
+      <div class="grid-3">
+        <a href="#" class="action-card" data-nav="ask">
+          <div class="industry-tag">Knowledge</div>
+          <h2>Спросить</h2>
+          <p>Trusted answer по регламентам и playbooks с источником и уверенностью.</p>
+          <span class="link">Перейти →</span>
+        </a>
+        <a href="#" class="action-card sand" data-nav="learn">
+          <div class="industry-tag">Microlearning</div>
+          <h2>Изучить</h2>
+          <p>Микроуроки 5–7 минут: спринты, релизы, стейкхолдеры, инциденты.</p>
+          <span class="link">Перейти →</span>
+        </a>
+        <a href="#" class="action-card lavender" data-nav="practice">
+          <div class="industry-tag">Scenarios</div>
+          <h2>Отработать</h2>
+          <p>Сценарии: ревью, эскалация риска, scope, переговоры по срокам.</p>
+          <span class="link">Перейти →</span>
+        </a>
+      </div>
+      <div class="grid-2 mt-3">
+        <div class="card" id="home-continue"></div>
+        <div>
+          <div class="card">
+            <div class="flex-wrap" style="justify-content:space-between">
+              <span class="stat-label">Недельная цель</span>
+              <span id="home-weekly-text"></span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="home-weekly-bar"></div></div>
+          </div>
+          <div class="card mt-2">
+            <div class="flex-wrap" style="justify-content:space-between">
+              <span class="stat-label">Общий прогресс</span>
+              <span id="home-overall-text"></span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill green" id="home-overall-bar"></div></div>
+          </div>
+          <div class="card mt-2 flex-wrap" style="justify-content:space-between">
+            <div>
+              <div class="stat-label">Streak</div>
+              <div class="stat-value" id="home-streak">0</div>
+              <div style="font-size:0.75rem;color:var(--muted)">дней подряд</div>
+            </div>
+            <button type="button" class="btn" data-nav="settings">Доступность →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASK -->
+    <section id="view-ask" class="view">
+      <h1>Спросить</h1>
+      <p class="lead">Имитация trusted-answer без LLM. Ответ всегда с provenance — как в корпоративной KB.</p>
+      <div class="card">
+        <label for="ask-input">Ваш вопрос</label>
+        <input type="text" id="ask-input" placeholder="Например: как отказать от scope creep на планировании" />
+        <div class="flex-wrap mt-2">
+          <button type="button" class="btn btn-primary" id="ask-submit">Получить ответ</button>
+          <button type="button" class="btn" id="ask-voice">🎤 Голосовой ввод</button>
+        </div>
+        <div class="chip-row" id="ask-chips"></div>
+        <p id="voice-fallback" class="hidden mt-2" style="font-size:0.85rem;color:var(--muted)"></p>
+      </div>
+      <div id="ask-result"></div>
+    </section>
+
+    <!-- LEARN -->
+    <section id="view-learn" class="view">
+      <h1>Изучить</h1>
+      <p class="lead">10 микроуроков для IT / digital: коммуникация в delivery, не только теория.</p>
+      <div id="learn-list" class="grid-2"></div>
+      <div id="learn-detail" class="hidden"></div>
+    </section>
+
+    <!-- PRACTICE -->
+    <section id="view-practice" class="view">
+      <h1>Отработать</h1>
+      <p class="lead">Сценарии из жизни delivery-команд: ревью, релиз, инцидент, стейкхолдеры.</p>
+      <div id="practice-list" class="grid-2"></div>
+      <div id="practice-detail" class="hidden"></div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section id="view-progress" class="view">
+      <h1>Прогресс</h1>
+      <p class="lead">Профессиональная картина обучения — без «казино»-геймификации.</p>
+      <div id="progress-content"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="view-settings" class="view">
+      <h1>Настройки доступности</h1>
+      <p class="lead">Для аудитории 20–70 лет: крупный текст, контраст, озвучка.</p>
+      <div class="card" id="settings-panel"></div>
+      <p id="speech-fallback" class="mt-2" style="font-size:0.85rem;color:var(--muted)"></p>
+    </section>
+  </main>
+
+  <div id="toast" role="status"></div>
+
+  <script>
+window.BV_DATA = {
+  industry: 'IT / Digital Product / Delivery',
+  cards: [
+    { id:'c1', title:'Как мягко не согласиться на ревью спринта', keywords:['ревью','спринт','несогласие','sprint review'],
+      answer:'Подтвердите цель (predictability), отделите velocity от качества, предложите план: scope cut / buffer / follow-up.',
+      source:'IT Delivery — Difficult Conversations Pack', version:'Demo v1.0 · IT', confidence:'High',
+      fragment:'«Я слышу, что критична предсказуемость поставки. Давайте зафиксируем факты по scope и рискам, затем выберем сценарий к следующему релизу.»',
+      lessonId:'l6' },
+    { id:'c2', title:'Уточнение user story без обвинений', keywords:['требования','story','acceptance','scope'],
+      answer:'Спросите acceptance criteria, NFR, приоритет; перефразируйте; зафиксируйте в Jira/Confluence одним комментарием.',
+      source:'Agile BA Playbook — Enterprise IT', version:'Demo v1.0', confidence:'High',
+      fragment:'«Чтобы не промахнуться с оценкой: что must-have в MVP, и как выглядит done для этой story?»',
+      lessonId:'l3' },
+    { id:'c3', title:'Защита архитектурного решения на комитете', keywords:['архитектура','защита','ADR','decision'],
+      answer:'Контекст → ограничения (SLA, security, cost) → варианты → выбор → риски и митигация → запрос решения.',
+      source:'Architecture Review Framework', version:'Demo v1.0', confidence:'High',
+      fragment:'Given legacy integration and Q2 deadline, option B saves 2 weeks; risk is ops load — mitigated by runbook.',
+      lessonId:'l4' },
+    { id:'c4', title:'Коммуникация при production-инциденте', keywords:['инцидент','incident','P1','эскалация'],
+      answer:'Факты: impact, ETA, workaround. Без blame. Канал: status page + короткий bridge call. Owner и next update.',
+      source:'SRE Communication Standard', version:'Demo v1.0', confidence:'High',
+      fragment:'Impact: checkout 40% errors. ETA restore: 45 min. Workaround: retry payment. Next update: 14:30.',
+      lessonId:'l5' },
+    { id:'c5', title:'Переговоры по дате релиза с бизнесом', keywords:['релиз','deadline','release','sprint'],
+      answer:'Якоря: scope, QA buffer, дата. Trade-off: MVP к дате X или full scope к Y.',
+      source:'Release Negotiation Cards — IT', version:'Demo v1.0', confidence:'High',
+      fragment:'При полном scope — 4 недели. К вашей дате — MVP без модулей A/B, письмом фиксируем scope v1.',
+      lessonId:'l1' },
+    { id:'c6', title:'Как сказать «нет» scope creep в спринте', keywords:['нет','scope creep','спринт'],
+      answer:'ACK запроса + capacity/quality limit + альтернатива (следующий спринт / swap story).',
+      source:'Scrum Master Communication Guide', version:'Demo v1.0', confidence:'High',
+      fragment:'Понимаю ценность фичи. В этом спринте capacity закрыта; могу взять в Sprint+1 или снять story B.',
+      lessonId:'l2' },
+    { id:'c7', title:'Переформулировка жёсткого feedback в Slack', keywords:['feedback','slack','конфликт'],
+      answer:'Reflect → need → question. Не отвечать в треде эмоцией; предложить 1:1.',
+      source:'Remote Team Communication', version:'Demo v1.0', confidence:'Medium',
+      fragment:'Похоже, важна стабильность релиза. Давайте в 1:1 разберём критерий качества?',
+      lessonId:'l8' },
+    { id:'c8', title:'Закрытие refinement action list', keywords:['action','refinement','итоги'],
+      answer:'3 action: owner, artifact (ticket/doc), due. «Что упустили?» Follow-up в канале за 2 часа.',
+      source:'Ceremony Closure Checklist', version:'Demo v1.0', confidence:'High',
+      fragment:'Actions: Ivan — ADR draft Wed; Anna — spike results Thu; PM — priority Fri 12:00.',
+      lessonId:'l9' },
+    { id:'c9', title:'Проверка понимания на handoff в поддержку', keywords:['handoff','понимание','support'],
+      answer:'Teach-back + runbook link + severity matrix. Письмо: bullets + confirm/correct.',
+      source:'Support Handoff Standard', version:'Demo v1.0', confidence:'High',
+      fragment:'Правильно ли я понимаю: L2 берёт on-call с пятницы, P1 — bridge в 15 мин?',
+      lessonId:'l10' },
+    { id:'c10', title:'Нормативная ссылка на security / compliance policy', keywords:['security','compliance','ISO','policy'],
+      answer:'Имя policy, версия, section. Если не уверены — «вернусь с точной цитатой за 2 ч».',
+      source:'InfoSec Communication Policy', version:'Demo v1.0', confidence:'High',
+      fragment:'Per SEC-POL-07 v2.1, prod access requires ticket APP-xxx — подготовлю сегодня.',
+      lessonId:'l10' }
+  ],
+  phrases: [
+    { en:'I understand the concern. Let me clarify the constraint before we decide on the next step.', ru:'Я понимаю опасение. Позвольте уточнить ограничение, прежде чем мы определим следующий шаг.' },
+    { en:'Given current sprint capacity, I cannot commit without descoping or moving the story.', ru:'При текущей ёмкости спринта не могу взять обязательство без сокращения scope или переноса story.' },
+    { en:'Here is impact, ETA, and workaround — next update at 14:30.', ru:'Вот impact, ETA и workaround — следующий апдейт в 14:30.' },
+    { en:'If I hear you correctly, the blocker is environment access, not estimation.', ru:'Если я правильно понял, блокер — доступ к среде, а не оценка.' },
+    { en:'Before we close refinement, let us confirm three actions with owners and dates.', ru:'Прежде чем закрыть refinement, подтвердим три action с владельцами и датами.' },
+    { en:'I am open to adjusting the release date, not the security baseline.', ru:'Готов обсуждать дату релиза, но не baseline по безопасности.' }
+  ],
+  lessons: [
+    { id:'l1', tag:'Переговоры', min:6, title:'Релиз и сроки: trade-off для IT',
+      idea:'В delivery дата без scope — иллюзия. Якоря: scope, QA, ресурс.',
+      schema:['Зафиксировать MVP scope','Оценить QA / regression','Два сценария даты','Письменное согласование'],
+      explain:'Бизнес часто слышит «нет». Покажите выбор между сценариями — это снижает конфликт на steering committee.',
+      quiz:[
+        { q:'Первый шаг при давлении на дату релиза?', o:['Согласиться','Зафиксировать scope и критерии done','Уйти в отпуск','Обвинить QA'], c:1, e:'Без scope дата не обсуждается.' },
+        { q:'Лучший компромисс?', o:['«Постараемся»','MVP к дате X vs full scope к Y','Молчание','Эскалация в Twitter'], c:1, e:'Прозрачный trade-off.' },
+        { q:'Зачем письмо после встречи?', o:['Для красоты','Синхронизация ожиданий','Не нужно','Только HR'], c:1, e:'Снижает споры post-release.' }
+      ],
+      case:{ s:'Product Owner требует full scope к концу квартала — оценка 12 недель, сейчас неделя 8.', p:'Сформулируйте trade-off.', a:'К концу квартала — MVP (модули 1–3). Full scope — +4 недели. Фиксируем scope v1 письмом.' },
+      form:{ p:'Завершите: «При текущем scope ___; к дате PO нужен ___»', h:'Дата + условие', a:'При текущем scope — 4 недели; к дате PO — MVP без отчётности и SSO.' } },
+    { id:'l2', tag:'Границы', min:5, title:'Сказать «нет» scope creep в спринте',
+      idea:'Отказ — про capacity и quality bar, не про «не хочу».',
+      schema:['ACK ценности','Лимит capacity','Альтернатива: swap / next sprint'],
+      explain:'В Agile «нет» = управление WIP. Это профессиональная позиция тимлида / SM.',
+      quiz:[
+        { q:'Чего избегать?', o:['Альтернативы','Извинений за границу capacity','Конкретики','Уважения'], c:1, e:'Извинение размывает границу.' },
+        { q:'Хорошая альтернатива?', o:['«Не знаю»','Sprint+1 или swap story','Игнор','Уход'], c:1, e:'Конкретное действие.' },
+        { q:'ACK — это?', o:['Согласие делать всё','Признание ценности запроса','Отказ','Эскалация'], c:1, e:'Признание ≠ согласие.' }
+      ],
+      case:{ s:'На daily PO добавляет «маленькую» story на 5 SP.', p:'Ответ без срыва ритма.', a:'Ценность вижу. Спринт committed; могу взять в планировании следующего спринта или снять story X.' },
+      form:{ p:'Одно предложение: ACK + лимит + альтернатива.', h:'Без «извините, но»', a:'Понимаю приоритет. Capacity спринта закрыта; переносим на планирование +1 или swap с story Y.' } },
+    { id:'l3', tag:'Уточнение', min:6, title:'Уточнение требований (user story)',
+      idea:'Неясная story = технический долг и переработки.',
+      schema:['Acceptance criteria','NFR / интеграции','Teach-back','Комментарий в тикете'],
+      explain:'Вопросы на refinement — норма для senior engineer и BA.',
+      quiz:[
+        { q:'Лучший первый вопрос?', o:['Кто виноват?','Как выглядит done?','Когда обед?','Почему срочно?'], c:1, e:'Done criteria задают объём.' },
+        { q:'Teach-back — это?', o:['Повтор курса','Пересказ для проверки','Отказ','Жалоба'], c:1, e:'«Правильно ли я понимаю…»' },
+        { q:'Зачем фиксация в Jira?', o:['Бюрократия','Единый source of truth','Не нужно','Для KPI'], c:1, e:'Снижает scope drift.' }
+      ],
+      case:{ s:'Story: «Интеграция с CRM — быстро».', p:'2 уточняющих вопроса.', a:'Что в MVP: read или write? Какой SLA и sandbox доступ к пятнице?' },
+      form:{ p:'Teach-back одним предложением.', h:'Срок + формат', a:'Правильно ли: к 15.05 — read-only sync, 99% < 2s, ошибки в наш мониторинг?' } },
+    { id:'l4', tag:'Аргументация', min:7, title:'Защита технического решения',
+      idea:'Защищайте ADR и trade-offs, не ego.',
+      schema:['Контекст и SLA','Ограничения','Варианты A/B','Риски + митигация','Запрос решения'],
+      explain:'Architecture committee ждёт альтернативы. «Единственный вариант» без сравнения — red flag.',
+      quiz:[
+        { q:'Избегать?', o:['Рисков','«Вы не в теме»','Структуры','Критериев'], c:1, e:'Персонализация.' },
+        { q:'Запрос в конце?', o:['Лайк','Решение по критерию','Молчание','Уход'], c:1, e:'«Подтверждаем B?»' },
+        { q:'Риски нужны чтобы?', o:['Напугать','Показать зрелость','Отменить всё','Скрыть'], c:1, e:'Доверие.' }
+      ],
+      case:{ s:'Спор: Kubernetes vs managed PaaS.', p:'3 предложения defense.', a:'SLA 99.9, команда 3 FTE ops. PaaS быстрее на 3 нед.; K8s гибче — митигация managed node pools. Нужен выбор к пятнице.' },
+      form:{ p:'Выбор + риск + митигация.', h:'Одно предложение', a:'PaaS из-за срока; риск vendor lock-in; митигация — abstraction layer в Q3.' } },
+    { id:'l5', tag:'Инциденты', min:6, title:'Коммуникация при инциденте (SRE)',
+      idea:'Status update = impact, ETA, workaround, next comms.',
+      schema:['Impact измеримый','ETA честный','Workaround','Owner + next update'],
+      explain:'Bridge call не для поиска виноватых. Тон спокойный, темп −10%.',
+      quiz:[
+        { q:'В первом сообщении НЕ нужно?', o:['ETA','Blame / кто сломал','Workaround','Impact'], c:1, e:'Blame отвлекает.' },
+        { q:'ETA лучше?', o:['«Скоро»','Конкретное время следующего апдейта','Никогда','Молчать'], c:1, e:'Predictability.' },
+        { q:'Канал для стейкхолдеров?', o:['Личные обиды','Status / bridge','Мемы','Только устно'], c:1, e:'Единый канал.' }
+      ],
+      case:{ s:'P1: API 503 для B2B клиентов.', p:'Первая фраза в bridge.', a:'Impact: B2B API 503 ~60% requests. Investigating DB failover. Workaround: cache read path. Next update 15 min.' },
+      form:{ p:'Шаблон: Impact / ETA / Workaround / Next.', h:'4 части', a:'Impact: login fails EU. ETA: 30 min. Workaround: use backup URL. Next: 11:45.' } },
+    { id:'l6', tag:'Сложный разговор', min:7, title:'Неудобный разговор на ревью',
+      idea:'Цель — predictability и next step, не победа.',
+      schema:['Цель встречи','Факты без оценок','Слушать','Action list'],
+      explain:'Публичное ревью — не место для детальной защиты. Детали — после.',
+      quiz:[
+        { q:'Хорошее открытие?', o:['«Ты опоздал»','«Синхронизируем по цели спринта»','Молчание','Ультиматум'], c:1, e:'Намерение.' },
+        { q:'На публичном review?', o:['Спор 30 мин','Краткий план после','Уйти','Писать мемы'], c:1, e:'Контроль.' },
+        { q:'Закрытие?', o:['Эмоции','Actions','Конфликт','Игнор'], c:1, e:'Who/what/when.' }
+      ],
+      case:{ s:'Директор: «Команда снова сорвала спринт» на all-hands.', p:'Ответ в зале.', a:'Понимаю критичность. После call пришлю факты, root causes и 3 сценария к следующему релизу.' },
+      form:{ p:'Фраза без обвинения.', h:'I-message', a:'Хочу согласовать ожидания по velocity и quality — предложу план к 17:00.' } },
+    { id:'l7', tag:'Голос', min:5, title:'Голос и паузы (bridge / 1:1)',
+      idea:'Темп и пауза = воспринимаемая уверенность.',
+      schema:['−10% темп','Пауза перед ключевым','Нейтральная интонация'],
+      explain:'Под стрессом голос ускоряется. Пауза 1–2 сек перед ETA.',
+      quiz:[
+        { q:'Восходящая интонация в конце утверждения?', o:['Уверенность','Звучит как вопрос','Всегда лучше','Не слышна'], c:1, e:'Сомнение.' },
+        { q:'Пауза?', o:['Слабость','Вес мысли','Грубость','Запрет'], c:1, e:'Внимание.' },
+        { q:'На инциденте темп?', o:['Максимум','Чуть медленнее','Крик','Шёпот'], c:1, e:'Контроль.' }
+      ],
+      case:{ s:'Нужно сказать «нет» PO на созвоне.', p:'Где пауза?', a:'«Понимаю приоритет. [пауза] При committed scope не возьму без descoping.»' },
+      form:{ p:'Разметьте [пауза] в фразе отказа.', h:'Перед ограничением', a:'Вижу срочность. [пауза] До пятницы без QA buffer не коммитим.' } },
+    { id:'l8', tag:'Рефрейм', min:6, title:'Переформулировка жёсткого feedback',
+      idea:'Атаку → потребность → вопрос.',
+      schema:['Reflect','Reframe to need','Clarifying question'],
+      explain:'«Код ужасен» → «Важна maintainability — какой критерий не выполнен?»',
+      quiz:[
+        { q:'Рефрейм ≠', o:['Согласие со всем','Перевод в предмет','Игнор','Вопрос'], c:0, e:'Не capitulation.' },
+        { q:'Reflect звучит как?', o:['Сарказм','«Похоже, критично X»','Молчание','Уход'], c:1, e:'Без сарказма.' },
+        { q:'После?', o:['Монолог','Вопрос','Уход','Повтор'], c:1, e:'Диалог.' }
+      ],
+      case:{ s:'«Вы снова сломали прод!» в Slack.', p:'Ответ в треде.', a:'Вижу серьёзность. Для postmortem: какой user impact считаем критичным? Предлагаю bridge через 10 мин.' },
+      form:{ p:'Reflect + reframe для «опять баги».', h:'Без «но вы»', a:'Похоже, накопилась фрустрация по качеству. Разберём критерий релиза на 1:1?' } },
+    { id:'l9', tag:'Закрытие', min:5, title:'Action list после refinement / review',
+      idea:'Встреча закончена, когда есть who/what/when.',
+      schema:['3 решения','3 actions','«Что упустили?»','Follow-up 2ч'],
+      explain:'В IT follow-up = тикеты + короткое сообщение в канал.',
+      quiz:[
+        { q:'Action без даты?', o:['OK','Риск забыть','Идеал','ISO'], c:1, e:'Accountability.' },
+        { q:'«Что упустили?»', o:['Затянуть','Слепые зоны','Спор','Уйти'], c:1, e:'Полнота.' },
+        { q:'Follow-up?', o:['Неделя','2 часа','Никогда','Только устно'], c:1, e:'Свежий контекст.' }
+      ],
+      case:{ s:'Refinement 45 мин без итога.', p:'Закрыть за 30 сек.', a:'Берём story X. Ivan — spike ср; Anna — API contract чт; PO — priority пт. Что упустили?' },
+      form:{ p:'3 bullets action.', h:'Who/what/when', a:'• Dev — spike Wed EOD • BA — AC Thu • Ops — env Fri' } },
+    { id:'l10', tag:'Синхронизация', min:5, title:'Проверка понимания (handoff)',
+      idea:'Handoff без teach-back = инциденты в support.',
+      schema:['Teach-back','Измеримый критерий','Confirm/correct','Тикет/док'],
+      explain:'L1/L2/L3 handoff в enterprise IT требует явных критериев эскалации.',
+      quiz:[
+        { q:'«Понятно?» слабо, потому что', o:['Длинно','Кивают из вежливости','Запрещено','Сложно'], c:1, e:'Нужен teach-back.' },
+        { q:'Измеримый критерий?', o:['«Скоро»','SLA + channel + owner','«Хорошо»','Ничего'], c:1, e:'Конкретика.' },
+        { q:'В письме?', o:['Только эмоции','Bullets + confirm','50 стр','Без темы'], c:1, e:'Сканируемость.' }
+      ],
+      case:{ s:'Передача фичи в L2 support.', p:'Closing paragraph.', a:'Handoff: feature X v2.1, known limits A,B. P1 — bridge 15 min. Подтвердите или поправьте до 16:00.' },
+      form:{ p:'Teach-back для «быстрый handoff».', h:'Срок+канал', a:'Правильно ли: сегодня 17:00 в Confluence — runbook + 5 bullets risks?' } }
+  ],
+  scenarios: [
+    { id:'s1', tag:'Сложный разговор', title:'Ревью спринта: сорванный инкремент',
+      industry:'FinTech delivery · 8 человек на call',
+      situation:'На Sprint Review директор: «Третий спринт подряд без релиза в prod. Команда не тянет. Нужен жёсткий план к завтра.» Zoom, 12 человек, включая клиента-слушателя.',
+      userRole:'Engineering Manager / Tech Lead', counterpart:'Директор по продукту + Account',
+      objective:'Сохранить доверие, не обещать невозможное, вынести детальный план из публичного зала.',
+      constraints:['Публичный call','Реальный техдолг и deps','Клиент на линии'],
+      phrases:[0,1,4],
+      options:[
+        { id:'a', style:'direct', text:'«Это не наша вина — DevOps задержал pipeline.»', score:1, fb:'Blame в публичном формате усиливает эскалацию. Клиент слышит внутренний конфликт.' },
+        { id:'b', style:'diplomatic', text:'«Понимаю критичность prod-релиза. После review за 45 минут пришлю: факты по scope, blockers, 3 сценария с датами и рисками.»', score:5, fb:'Подтверждает цель, переносит детали, показывает control — best practice для IT reviews.' },
+        { id:'c', style:'soft', text:'«Завтра всё будет в prod.»', score:2, fb:'Снимает напряжение, но создаёт риск срыва и потери доверия при P1.' }
+      ], best:'b' },
+    { id:'s2', tag:'Аргументация', title:'Защита решения: отложить релиз из-за QA',
+      industry:'B2B SaaS · compliance-heavy',
+      situation:'Вы рекомендуете перенос релиза на 1 неделю: не пройден regression по платежам. CEO: «Конкуренты уже выкатили фичу, теряем сделки.»',
+      userRole:'Product Owner / Release Manager', counterpart:'CEO',
+      objective:'Защитить quality bar и compliance без личного конфликта.',
+      constraints:['Board visibility','Штрафы SLA в контракте','Решение сегодня'],
+      phrases:[2,5],
+      options:[
+        { id:'a', style:'direct', text:'«Если релизим сейчас — 3 инцидента прошлого квартала повторятся; стоимость support ×4. Альтернатива: limited rollout 5% users через 5 дней после QA sign-off.»', score:5, fb:'Факты + cost + phased alternative — сильная IT/business позиция.' },
+        { id:'b', style:'direct', text:'«Вы не понимаете техническую сторону QA.»', score:0, fb:'Персональная атака — разрушает диалог с CEO.' },
+        { id:'c', style:'soft', text:'«Ок, релизим сегодня.»', score:2, fb:'Игнорирует risk management; не роль PO/RM.' }
+      ], best:'a' },
+    { id:'s3', tag:'Уточнение', title:'Размытая story от бизнес-аналитика',
+      industry:'Internal ERP integration',
+      situation:'BA в Teams: «Сделайте интеграцию с ERP как в прошлый раз, только быстрее, без лишних вопросов.» Нет ссылки на прошлый проект.',
+      userRole:'Senior Backend Developer', counterpart:'Business Analyst',
+      objective:'Уточнить scope и acceptance без эскалации.',
+      constraints:['Асинхронный чат','Давление «не задавать вопросов»','Нет формального BRD'],
+      phrases:[3,4],
+      options:[
+        { id:'a', style:'soft', text:'«Ок»', score:1, fb:'Высокий риск переделок и споров на UAT.' },
+        { id:'b', style:'diplomatic', text:'«Чтобы уложиться в срок: что входит в «как в прошлый раз» — read/write, какие сущности? Deadline и формат приёмки — одним сообщением, зафиксирую в Jira.»', score:5, fb:'Конкретно, уважительно, письменная фиксация — стандарт IT.' },
+        { id:'c', style:'direct', text:'«Без BRD не начинаем. Идите в бэклог.»', score:2, fb:'Формально верно, но в чате звучит жёстко.' }
+      ], best:'b' },
+    { id:'s4', tag:'Границы', title:'Мягкое несогласие: ещё одна «срочная» story',
+      industry:'Sprint planning · команда 6 dev',
+      situation:'На планировании PO добавляет срочную story (8 SP) «от sales». Спринт уже на 42/40 SP.',
+      userRole:'Scrum Master / Team Lead', counterpart:'Product Owner',
+      objective:'Отстоять sustainable pace без порчи отношений.',
+      constraints:['Sales давит','Команда перегружена','Публичная планёрка'],
+      phrases:[1,5],
+      options:[
+        { id:'a', style:'diplomatic', text:'«Не влезает без swap: могу заменить story X или вынести в следующий спринт с приоритетом 1. Нужно решение сейчас.»', score:5, fb:'Граница + trade-off — зрелый Agile.' },
+        { id:'b', style:'direct', text:'«Нет.»', score:3, fb:'Чётко, но без альтернативы на планировании звучит резко.' },
+        { id:'c', style:'soft', text:'«Ладно, команда как-нибудь.»', score:2, fb:'Риск burnout и дефекта в prod.' }
+      ], best:'a' },
+    { id:'s5', tag:'Риск', title:'Эскалация: уязвимость перед релизом',
+      industry:'Security · release train',
+      situation:'За 3 дня до release candidate security находит High CVE в зависимости. Руководитель: «не эскалировать мелочи».',
+      userRole:'Security Champion / Lead Dev', counterpart:'Release Director',
+      objective:'Донести риск с вариантами, не паникуя.',
+      constraints:['Культура «не мешать релизу»','CVE реален','Нужен краткий формат'],
+      phrases:[2,5],
+      options:[
+        { id:'a', style:'soft', text:'Молчать до релиза.', score:0, fb:'Противоречит security policy и professional duty.' },
+        { id:'b', style:'direct', text:'«Risk High: CVE-XXXX в lib Z, exploit public. Варианты: (1) patch + 2d retest, (2) WAF rule temp, (3) delay release 3d. Нужно решение до завтра 12:00.»', score:5, fb:'Структурированная IT-эскалация с опциями.' },
+        { id:'c', style:'direct', text:'«Всё пропало, релиз нельзя!»', score:1, fb:'Эмоция без структуры снижает доверие.' }
+      ], best:'b' },
+    { id:'s6', tag:'Переговоры', title:'Переговоры по дате go-live с заказчиком',
+      industry:'System integration · fixed-price',
+      situation:'Заказчик требует go-live через 3 недели. Оценка: 6 недель при полном интеграционном scope (5 систем).',
+      userRole:'Delivery Manager', counterpart:'Customer IT Director',
+      objective:'Согласовать реалистичный план или scope без срыва контракта.',
+      constraints:['Штрафы в контракте','Нет extra budget','Нужно письменное согласование'],
+      phrases:[0,4],
+      options:[
+        { id:'a', style:'diplomatic', text:'«При полном scope — 6 недель с UAT. К go-live через 3 недели — phase 1: auth + core API; phase 2 — отчётность. Зафиксируем scope v1 письмом сегодня.»', score:5, fb:'Классический IT integration trade-off + contract hygiene.' },
+        { id:'b', style:'direct', text:'«Нереально.»', score:2, fb:'Честно, но без пути вперёд — эскалация.' },
+        { id:'c', style:'soft', text:'«Постараемся.»', score:1, fb:'Размытое обещание → penalty и конфликт.' }
+      ], best:'a' }
+  ],
+  skills: ['Переговоры','Границы','Уточнение','Аргументация','Инциденты','Сложный разговор','Голос','Рефрейм','Закрытие','Синхронизация']
+};
+  </script>
+  <script>
+(function () {
+  const D = window.BV_DATA;
+  const SK = 'businessvoice_v1';
+
+  const defaultState = () => ({
+    completedLessons: [],
+    favorites: [],
+    savedAnswers: {},
+    scenarioBest: {},
+    weeklyGoal: 3,
+    weeklyCurrent: 0,
+    weekStart: weekStartISO(),
+    streak: 0,
+    lastActive: null,
+    skills: {},
+    continueLesson: null,
+    a11y: { largeText: false, highContrast: false, reducedMotion: false, readAloud: true, lang: 'ru' }
+  });
+
+  function weekStartISO() {
+    const d = new Date();
+    const day = d.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    d.setDate(d.getDate() + diff);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(SK);
+      if (!raw) return defaultState();
+      return Object.assign(defaultState(), JSON.parse(raw));
+    } catch (e) {
+      return defaultState();
+    }
+  }
+
+  function save(st) {
+    localStorage.setItem(SK, JSON.stringify(st));
+  }
+
+  let state = load();
+  let currentLesson = null;
+  let lessonStep = 0;
+  let quizRevealed = {};
+  let currentScenario = null;
+  let scenarioSelected = null;
+  let styleFilter = 'all';
+
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+  }
+
+  function touchActivity() {
+    const today = new Date().toISOString().slice(0, 10);
+    if (state.lastActive === today) return;
+    if (state.lastActive) {
+      const diff = Math.floor((new Date(today) - new Date(state.lastActive)) / 86400000);
+      state.streak = diff === 1 ? state.streak + 1 : 1;
+    } else state.streak = 1;
+    state.lastActive = today;
+    const ws = weekStartISO();
+    if (state.weekStart !== ws) {
+      state.weekStart = ws;
+      state.weeklyCurrent = 0;
+    }
+    save(state);
+  }
+
+  function bumpWeekly() {
+    const ws = weekStartISO();
+    if (state.weekStart !== ws) {
+      state.weekStart = ws;
+      state.weeklyCurrent = 0;
+    }
+    state.weeklyCurrent = Math.min(state.weeklyGoal, state.weeklyCurrent + 1);
+    save(state);
+  }
+
+  function bumpSkill(tag, pts) {
+    state.skills[tag] = Math.min(100, (state.skills[tag] || 0) + pts);
+    save(state);
+  }
+
+  function applyA11y() {
+    const b = document.body;
+    const a = state.a11y;
+    b.classList.toggle('large-text', a.largeText);
+    b.classList.toggle('high-contrast', a.highContrast);
+    b.classList.toggle('reduced-motion', a.reducedMotion);
+    b.classList.toggle('large-buttons', a.largeText);
+  }
+
+  function speak(text) {
+    if (!state.a11y.readAloud || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = state.a11y.lang === 'en' ? 'en-US' : 'ru-RU';
+    u.rate = 0.95;
+    window.speechSynthesis.speak(u);
+  }
+
+  function phraseText(idx) {
+    const p = D.phrases[idx];
+    if (!p) return '';
+    if (state.a11y.lang === 'en') return p.en;
+    if (state.a11y.lang === 'bilingual') return p.ru + ' / ' + p.en;
+    return p.ru;
+  }
+
+  function searchCards(q) {
+    const query = (q || '').trim().toLowerCase();
+    if (!query) return null;
+    let best = null, bestScore = 0;
+    D.cards.forEach((c) => {
+      let s = 0;
+      if (c.title.toLowerCase().includes(query)) s += 5;
+      c.keywords.forEach((k) => {
+        if (query.includes(k) || k.includes(query)) s += 3;
+      });
+      if (s > bestScore) { bestScore = s; best = c; }
+    });
+    if (!best) {
+      query.split(/\s+/).filter((w) => w.length > 2).forEach((w) => {
+        D.cards.forEach((c) => {
+          let s = 0;
+          if (c.title.toLowerCase().includes(w)) s += 2;
+          if (c.keywords.some((k) => k.includes(w))) s += 2;
+          if (s > bestScore) { bestScore = s; best = c; }
+        });
+      });
+    }
+    return best || D.cards[0];
+  }
+
+  function confBadge(c) {
+    const cls = c === 'High' ? 'badge-success' : c === 'Medium' ? 'badge-warning' : 'badge-danger';
+    const lbl = c === 'High' ? 'Высокая уверенность' : c === 'Medium' ? 'Средняя' : 'Низкая';
+    return '<span class="badge ' + cls + '">' + lbl + '</span>';
+  }
+
+  function styleLabel(s) {
+    return { soft: 'Мягкий', direct: 'Прямой', diplomatic: 'Дипломатичный' }[s] || s;
+  }
+
+  function navigate(view) {
+    document.querySelectorAll('.view').forEach((v) => v.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach((n) => {
+      n.classList.toggle('active', n.getAttribute('data-nav') === view);
+    });
+    if (view === 'home') renderHome();
+    if (view === 'learn' && !currentLesson) renderLearnList();
+    if (view === 'practice' && !currentScenario) renderPracticeList();
+    if (view === 'progress') renderProgress();
+    if (view === 'settings') renderSettings();
+    touchActivity();
+    window.scrollTo(0, 0);
+  }
+
+  function renderHome() {
+    const total = D.lessons.length;
+    const done = state.completedLessons.length;
+    const pct = Math.round((done / total) * 100);
+    const wPct = Math.min(100, Math.round((state.weeklyCurrent / state.weeklyGoal) * 100));
+    document.getElementById('home-weekly-text').textContent = state.weeklyCurrent + '/' + state.weeklyGoal;
+    document.getElementById('home-weekly-bar').style.width = wPct + '%';
+    document.getElementById('home-overall-text').textContent = pct + '%';
+    document.getElementById('home-overall-bar').style.width = pct + '%';
+    document.getElementById('home-streak').textContent = state.streak;
+
+    const contId = state.continueLesson || D.lessons.find((l) => !state.completedLessons.includes(l.id))?.id;
+    const les = D.lessons.find((l) => l.id === contId);
+    const el = document.getElementById('home-continue');
+    if (!les) {
+      el.innerHTML = '<h3>Все демо-уроки пройдены</h3><p style="color:var(--muted)">Отработайте сценарии или спросите по базе знаний.</p>';
+      return;
+    }
+    el.innerHTML =
+      '<h3>Продолжить обучение</h3><p class="badge badge-primary">' + les.tag + ' · ' + les.min + ' мин</p>' +
+      '<p style="font-size:1.1rem;font-weight:600;margin:8px 0">' + les.title + '</p>' +
+      '<button type="button" class="btn btn-primary" id="home-continue-btn">Продолжить</button>';
+    document.getElementById('home-continue-btn').onclick = () => openLesson(les.id);
+  }
+
+  function renderAskChips() {
+    const row = document.getElementById('ask-chips');
+    row.innerHTML = D.cards.slice(0, 4).map((c) =>
+      '<button type="button" class="chip" data-q="' + c.title.replace(/"/g, '&quot;') + '">' +
+      (c.title.length > 42 ? c.title.slice(0, 42) + '…' : c.title) + '</button>'
+    ).join('');
+    row.querySelectorAll('.chip').forEach((ch) => {
+      ch.onclick = () => {
+        document.getElementById('ask-input').value = ch.getAttribute('data-q');
+        submitAsk();
+      };
+    });
+  }
+
+  function submitAsk() {
+    const q = document.getElementById('ask-input').value;
+    const card = searchCards(q);
+    const box = document.getElementById('ask-result');
+    if (!card) { box.innerHTML = ''; return; }
+    const fav = state.favorites.includes(card.id);
+    box.innerHTML =
+      '<article class="card"><div class="flex-wrap" style="justify-content:space-between">' +
+      '<h2 style="margin:0">' + card.title + '</h2>' + confBadge(card.confidence) + '</div>' +
+      '<p class="industry-tag mt-2">' + D.industry + '</p>' +
+      '<h3 class="mt-2">Краткий ответ</h3><p>' + card.answer + '</p>' +
+      '<div class="card mt-2" style="background:var(--sand)"><h3>Provenance</h3>' +
+      '<p><span class="badge badge-sand">Источник: ' + card.source + '</span> ' +
+      '<span class="badge badge-sand">' + card.version + '</span></p></div>' +
+      '<div id="fragment-box" class="hidden mt-2"><h3>Фрагмент</h3><p id="fragment-text"></p></div>' +
+      '<div class="flex-wrap mt-2">' +
+      '<button type="button" class="btn" id="btn-read-answer">🔊 Озвучить</button>' +
+      '<button type="button" class="btn" id="btn-fragment">Открыть фрагмент</button>' +
+      '<button type="button" class="btn btn-primary" id="btn-micro">Сделать микроурок из ответа</button>' +
+      '<button type="button" class="btn ' + (fav ? 'btn-success' : '') + '" id="btn-fav">' +
+      (fav ? 'В избранном' : 'Сохранить') + '</button></div></article>';
+
+    document.getElementById('btn-read-answer').onclick = () => speak(card.title + '. ' + card.answer);
+    document.getElementById('btn-fragment').onclick = () => {
+      document.getElementById('fragment-box').classList.remove('hidden');
+      document.getElementById('fragment-text').textContent = card.fragment;
+    };
+    document.getElementById('btn-fav').onclick = () => {
+      const i = state.favorites.indexOf(card.id);
+      if (i >= 0) state.favorites.splice(i, 1);
+      else state.favorites.push(card.id);
+      save(state);
+      submitAsk();
+      toast(i >= 0 ? 'Удалено из избранного' : 'Сохранено');
+    };
+    document.getElementById('btn-micro').onclick = () => {
+      if (card.lessonId) openLesson(card.lessonId);
+      else navigate('learn');
+      toast('Переход к микроуроку');
+    };
+  }
+
+  function renderLearnList() {
+    currentLesson = null;
+    document.getElementById('learn-list').classList.remove('hidden');
+    document.getElementById('learn-detail').classList.add('hidden');
+    document.getElementById('learn-list').innerHTML = D.lessons.map((l) => {
+      const done = state.completedLessons.includes(l.id);
+      return '<div class="card" style="cursor:pointer" data-lid="' + l.id + '">' +
+        '<span class="badge badge-primary">' + l.tag + '</span> <span style="float:right;color:var(--muted);font-size:0.8rem">' + l.min + ' мин</span>' +
+        '<h3 style="margin-top:8px">' + l.title + '</h3><p style="color:var(--muted);font-size:0.9rem">' + l.idea + '</p>' +
+        (done ? '<p style="color:var(--success);font-size:0.8rem;margin-top:8px">✓ Завершён</p>' : '') + '</div>';
+    }).join('');
+    document.getElementById('learn-list').querySelectorAll('[data-lid]').forEach((el) => {
+      el.onclick = () => openLesson(el.getAttribute('data-lid'));
+    });
+  }
+
+  function openLesson(id) {
+    currentLesson = D.lessons.find((l) => l.id === id);
+    if (!currentLesson) return;
+    state.continueLesson = id;
+    save(state);
+    lessonStep = 0;
+    quizRevealed = {};
+    navigate('learn');
+    document.getElementById('learn-list').classList.add('hidden');
+    document.getElementById('learn-detail').classList.remove('hidden');
+    renderLessonStep();
+  }
+
+  function renderLessonStep() {
+    const l = currentLesson;
+    const steps = ['Идея', 'Схема', 'Разбор', 'Quiz', 'Кейс', 'Формулировка', 'Готово'];
+    const det = document.getElementById('learn-detail');
+    let stepsHtml = steps.map((s, i) =>
+      '<span class="lesson-step ' + (i <= lessonStep ? 'done' : '') + '">' + s + '</span>'
+    ).join(' ');
+
+    let body = '';
+    if (lessonStep === 0) {
+      body = '<h2>' + l.title + '</h2><p class="card" style="background:var(--primary-light)">' + l.idea + '</p>' +
+        '<button class="btn btn-primary" id="les-next">Далее</button>';
+    } else if (lessonStep === 1) {
+      body = '<h3>Схема</h3><ol>' +
+        l.schema.map((s) => '<li style="margin:8px 0">' + s + '</li>').join('') + '</ol>' +
+        '<button class="btn btn-primary" id="les-next">Далее</button>';
+    } else if (lessonStep === 2) {
+      body = '<p>' + l.explain + '</p><p class="badge badge-warning mt-2">Повтор: через 3 и 10 дней</p>' +
+        '<button class="btn btn-primary" id="les-next">К quiz</button>';
+    } else if (lessonStep === 3) {
+      body = '<h3>Проверка</h3>' + l.quiz.map((q, qi) => {
+        const rev = quizRevealed[qi];
+        return '<div class="card mt-2"><p><b>' + (qi + 1) + '.</b> ' + q.q + '</p>' +
+          q.o.map((opt, oi) => {
+            let cls = 'option-btn';
+            if (rev !== undefined) {
+              if (oi === q.c) cls += ' correct';
+              else if (rev === oi) cls += ' wrong';
+            }
+            return '<button type="button" class="' + cls + '" data-qi="' + qi + '" data-oi="' + oi + '"' +
+              (rev !== undefined ? ' disabled' : '') + '>' + opt + '</button>';
+          }).join('') +
+          (rev !== undefined ? '<p style="font-size:0.85rem;color:var(--muted)">' + q.e + '</p>' : '') + '</div>';
+      }).join('');
+      const allDone = l.quiz.every((_, i) => quizRevealed[i] !== undefined);
+      body += allDone ? '<button class="btn btn-primary mt-2" id="les-next">Далее</button>' : '';
+    } else if (lessonStep === 4) {
+      body = '<h3>Мини-кейс</h3><p style="color:var(--muted)">' + l.case.s + '</p><p><b>' + l.case.p + '</b></p>' +
+        '<details class="mt-2"><summary>Образец</summary><p>' + l.case.a + '</p></details>' +
+        '<button class="btn btn-primary mt-2" id="les-next">Далее</button>';
+    } else if (lessonStep === 5) {
+      body = '<p>' + l.form.p + '</p><p style="font-size:0.85rem;color:var(--muted)">' + l.form.h + '</p>' +
+        '<textarea id="form-input" rows="4" placeholder="Ваша формулировка…"></textarea>' +
+        '<details class="mt-2"><summary>Образец</summary><p>' + l.form.a + '</p></details>' +
+        '<button class="btn btn-primary mt-2" id="les-finish">Завершить урок</button>';
+    } else {
+      body = '<p style="color:var(--success);font-size:1.2rem;font-weight:600">Урок завершён</p>' +
+        '<button class="btn btn-primary mt-2" id="les-back">К списку уроков</button>';
+    }
+
+    det.innerHTML = '<a href="#" class="back-link" id="les-back-top">← Все уроки</a><div class="flex-wrap mt-2">' + stepsHtml + '</div>' +
+      '<div class="card mt-2"><div class="flex-wrap" style="justify-content:space-between">' +
+      '<span class="badge badge-primary">' + l.tag + ' · ' + l.min + ' мин</span>' +
+      '<button type="button" class="btn" id="les-read">🔊 Озвучить</button></div>' + body + '</div>';
+
+    document.getElementById('les-back-top').onclick = (e) => { e.preventDefault(); renderLearnList(); };
+    const readBtn = document.getElementById('les-read');
+    if (readBtn) readBtn.onclick = () => speak(l.title + '. ' + l.idea);
+    const next = document.getElementById('les-next');
+    if (next) next.onclick = () => { lessonStep++; renderLessonStep(); };
+    const fin = document.getElementById('les-finish');
+    if (fin) fin.onclick = () => {
+      if (!state.completedLessons.includes(l.id)) {
+        state.completedLessons.push(l.id);
+        bumpWeekly();
+        bumpSkill(l.tag, 15);
+      }
+      state.continueLesson = null;
+      save(state);
+      lessonStep = 6;
+      renderLessonStep();
+      toast('Прогресс сохранён');
+    };
+    const back = document.getElementById('les-back');
+    if (back) back.onclick = () => renderLearnList();
+
+    det.querySelectorAll('[data-qi]').forEach((btn) => {
+      btn.onclick = () => {
+        const qi = +btn.getAttribute('data-qi');
+        const oi = +btn.getAttribute('data-oi');
+        quizRevealed[qi] = oi;
+        renderLessonStep();
+      };
+    });
+  }
+
+  function renderPracticeList() {
+    currentScenario = null;
+    document.getElementById('practice-list').classList.remove('hidden');
+    document.getElementById('practice-detail').classList.add('hidden');
+    document.getElementById('practice-list').innerHTML = D.scenarios.map((s) => {
+      const done = state.scenarioBest[s.id];
+      return '<div class="card" style="cursor:pointer" data-sid="' + s.id + '">' +
+        '<span class="badge badge-primary">' + s.tag + '</span>' +
+        '<p class="industry-tag mt-1">' + s.industry + '</p>' +
+        '<h3>' + s.title + '</h3><p style="font-size:0.85rem;color:var(--muted)">' + s.situation.slice(0, 120) + '…</p>' +
+        (done ? '<p style="color:var(--success);font-size:0.8rem">✓ Ответ сохранён</p>' : '') + '</div>';
+    }).join('');
+    document.getElementById('practice-list').querySelectorAll('[data-sid]').forEach((el) => {
+      el.onclick = () => openScenario(el.getAttribute('data-sid'));
+    });
+  }
+
+  function openScenario(id) {
+    currentScenario = D.scenarios.find((s) => s.id === id);
+    scenarioSelected = null;
+    styleFilter = 'all';
+    document.getElementById('practice-list').classList.add('hidden');
+    document.getElementById('practice-detail').classList.remove('hidden');
+    renderScenario();
+  }
+
+  function renderScenario() {
+    const s = currentScenario;
+    const opts = styleFilter === 'all' ? s.options : s.options.filter((o) => o.style === styleFilter);
+    const sel = s.options.find((o) => o.id === scenarioSelected);
+    const best = s.options.find((o) => o.id === s.best);
+
+    let html = '<a href="#" class="back-link" id="sc-back">← Сценарии</a><div class="card mt-2">' +
+      '<p class="industry-tag">' + s.industry + '</p><h2>' + s.title + '</h2><p>' + s.situation + '</p>' +
+      '<p><b>Вы:</b> ' + s.userRole + ' · <b>Собеседник:</b> ' + s.counterpart + '</p>' +
+      '<p><b>Цель:</b> ' + s.objective + '</p><ul>' + s.constraints.map((c) => '<li>' + c + '</li>').join('') + '</ul></div>';
+
+    html += '<div class="flex-wrap mt-2">' +
+      ['all', 'soft', 'direct', 'diplomatic'].map((f) =>
+        '<button type="button" class="btn ' + (styleFilter === f ? 'btn-primary' : '') + '" data-style="' + f + '">' +
+        (f === 'all' ? 'Все стили' : styleLabel(f)) + '</button>'
+      ).join('') + '</div>';
+
+    html += '<h3 class="mt-2">Выберите ответ</h3>';
+    opts.forEach((o) => {
+      html += '<button type="button" class="option-btn ' + (scenarioSelected === o.id ? 'selected' : '') + '" data-oid="' + o.id + '">' + o.text + '</button>';
+    });
+
+    if (sel) {
+      const rec = sel.id === s.best;
+      html += '<div class="card mt-2" style="' + (rec ? 'border-color:var(--success)' : '') + '">' +
+        '<span class="badge badge-sand">' + styleLabel(sel.style) + '</span> ' +
+        (rec ? '<span class="badge badge-success">Рекомендуемый</span>' : '') +
+        ' <span style="font-size:0.8rem;color:var(--muted)">Оценка: ' + sel.score + '/5</span>' +
+        '<p class="mt-2">' + sel.fb + '</p></div>';
+      if (!rec && best) html += '<div class="card"><b>Рекомендуемая формулировка</b><p>' + best.text + '</p></div>';
+    }
+
+    html += '<div class="card mt-2"><h3>Phrase bank</h3>';
+    (s.phrases || []).forEach((i) => { html += '<div class="phrase-item">' + phraseText(i) + '</div>'; });
+    html += '</div><div class="flex-wrap mt-2">' +
+      '<button type="button" class="btn" id="sc-retry">Попробовать снова</button>' +
+      '<button type="button" class="btn btn-success" id="sc-save" ' + (!scenarioSelected ? 'disabled style="opacity:.5"' : '') + '>Сохранить лучший ответ</button>' +
+      '<button type="button" class="btn btn-primary" id="sc-done" ' + (!scenarioSelected ? 'disabled style="opacity:.5"' : '') + '>Завершить практику</button></div>';
+
+    document.getElementById('practice-detail').innerHTML = html;
+    document.getElementById('sc-back').onclick = (e) => { e.preventDefault(); renderPracticeList(); };
+    document.querySelectorAll('[data-style]').forEach((b) => {
+      b.onclick = () => { styleFilter = b.getAttribute('data-style'); renderScenario(); };
+    });
+    document.querySelectorAll('[data-oid]').forEach((b) => {
+      b.onclick = () => { scenarioSelected = b.getAttribute('data-oid'); renderScenario(); };
+    });
+    document.getElementById('sc-retry').onclick = () => { scenarioSelected = null; renderScenario(); };
+    document.getElementById('sc-save').onclick = () => {
+      if (!scenarioSelected) return;
+      state.scenarioBest[s.id] = { optionId: scenarioSelected, at: new Date().toISOString() };
+      save(state);
+      toast('Ответ сохранён');
+      renderScenario();
+    };
+    document.getElementById('sc-done').onclick = () => {
+      if (!scenarioSelected) return;
+      bumpSkill(s.tag, 12);
+      bumpWeekly();
+      state.savedAnswers[s.id] = scenarioSelected;
+      save(state);
+      toast('Практика завершена');
+      renderPracticeList();
+    };
+  }
+
+  function renderProgress() {
+    const total = D.lessons.length;
+    const done = state.completedLessons.length;
+    const pct = Math.round((done / total) * 100);
+    const wPct = Math.min(100, Math.round((state.weeklyCurrent / state.weeklyGoal) * 100));
+
+    let next = { label: 'Продолжите микрообучение', nav: 'learn' };
+    if (done >= 3 && Object.keys(state.scenarioBest).length < 3) next = { label: 'Отработайте сценарий', nav: 'practice' };
+    else if (done >= 3) next = { label: 'Спросите по IT knowledge base', nav: 'ask' };
+
+    let skillsHtml = D.skills.map((tag) => {
+      const v = state.skills[tag] || 0;
+      return '<div class="skill-row"><div class="skill-label"><span>' + tag + '</span><span>' + v + '%</span></div>' +
+        '<div class="progress-bar"><div class="progress-fill" style="width:' + v + '%"></div></div></div>';
+    }).join('');
+
+    const weak = D.skills.filter((t) => (state.skills[t] || 0) < 30).slice(0, 4);
+
+    document.getElementById('progress-content').innerHTML =
+      '<div class="stat-grid">' +
+      '<div class="card stat-card"><div class="stat-label">Уроки</div><div class="stat-value">' + done + '/' + total + '</div></div>' +
+      '<div class="card stat-card"><div class="stat-label">Практики</div><div class="stat-value">' + Object.keys(state.scenarioBest).length + '</div></div>' +
+      '<div class="card stat-card"><div class="stat-label">Streak</div><div class="stat-value">' + state.streak + '</div></div>' +
+      '<div class="card stat-card"><div class="stat-label">Неделя</div><div class="stat-value">' + state.weeklyCurrent + '/' + state.weeklyGoal + '</div></div></div>' +
+      '<div class="card mt-2"><b>' + pct + '%</b> общего прогресса<div class="progress-bar"><div class="progress-fill green" style="width:' + pct + '%"></div></div></div>' +
+      '<div class="card mt-2"><h3>Следующий шаг</h3><p>' + next.label + '</p><button class="btn btn-primary mt-2" data-nav="' + next.nav + '">Перейти</button></div>' +
+      (weak.length ? '<div class="card mt-2"><h3>Зоны роста</h3><div class="flex-wrap">' +
+        weak.map((w) => '<span class="badge badge-warning">' + w + '</span>').join('') + '</div></div>' : '') +
+      '<div class="card mt-2"><h3>Карта навыков</h3>' + skillsHtml + '</div>' +
+      '<div class="card mt-2"><h3>Завершённые уроки</h3>' +
+      (done ? '<ul>' + state.completedLessons.map((id) => {
+        const l = D.lessons.find((x) => x.id === id);
+        return '<li>✓ ' + (l ? l.title : id) + '</li>';
+      }).join('') + '</ul>' : '<p style="color:var(--muted)">Пока нет</p>') + '</div>' +
+      '<div class="card mt-2"><h3>Сохранённые ответы сценариев</h3>' +
+      (Object.keys(state.scenarioBest).length ? '<ul>' + Object.entries(state.scenarioBest).map(([sid, v]) => {
+        const sc = D.scenarios.find((x) => x.id === sid);
+        return '<li>' + (sc ? sc.title : sid) + ' — ' + new Date(v.at).toLocaleDateString('ru') + '</li>';
+      }).join('') + '</ul>' : '<p style="color:var(--muted)">Нет</p>') +
+      '<div class="card mt-2" style="border:1px dashed var(--primary);text-align:center;color:var(--muted)">' +
+      'Сертификат «IT Communication Foundations» — фаза 2 (после 10 уроков + 6 практик)</div>';
+  }
+
+  function renderSettings() {
+    const a = state.a11y;
+    document.getElementById('settings-panel').innerHTML =
+      ['largeText', 'highContrast', 'reducedMotion', 'readAloud'].map((key) => {
+        const labels = { largeText: 'Увеличить шрифт', highContrast: 'Высокий контраст', reducedMotion: 'Reduced motion', readAloud: 'Read-aloud' };
+        const checked = key === 'readAloud' ? a.readAloud : a[key];
+        return '<label class="card flex-wrap" style="justify-content:space-between;cursor:pointer;margin-bottom:8px">' +
+          '<span>' + labels[key] + '</span><input type="checkbox" data-a11y="' + key + '" ' + (checked ? 'checked' : '') + '></label>';
+      }).join('') +
+      '<p class="mt-2"><b>Язык (placeholder)</b></p><div class="flex-wrap">' +
+      ['ru', 'en', 'bilingual'].map((l) =>
+        '<button type="button" class="btn ' + (a.lang === l ? 'btn-primary' : '') + '" data-lang="' + l + '">' +
+        (l === 'ru' ? 'RU' : l === 'en' ? 'EN' : 'RU+EN') + '</button>'
+      ).join('') + '</div>';
+
+    document.getElementById('settings-panel').querySelectorAll('[data-a11y]').forEach((inp) => {
+      inp.onchange = () => {
+        const k = inp.getAttribute('data-a11y');
+        state.a11y[k === 'readAloud' ? 'readAloud' : k] = inp.checked;
+        save(state);
+        applyA11y();
+      };
+    });
+    document.querySelectorAll('[data-lang]').forEach((b) => {
+      b.onclick = () => {
+        state.a11y.lang = b.getAttribute('data-lang');
+        save(state);
+        renderSettings();
+      };
+    });
+
+    const fb = document.getElementById('speech-fallback');
+    if (!window.speechSynthesis) fb.textContent = 'Озвучка недоступна в этом браузере.';
+    else fb.textContent = 'Web Speech API доступен.';
+  }
+
+  function setupVoice() {
+    const fb = document.getElementById('voice-fallback');
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      fb.classList.remove('hidden');
+      fb.textContent = 'Голосовой ввод недоступен в этом браузере. Используйте текстовый ввод.';
+      document.getElementById('ask-voice').style.display = 'none';
+      return;
+    }
+    document.getElementById('ask-voice').onclick = () => {
+      const rec = new SR();
+      rec.lang = 'ru-RU';
+      rec.onresult = (e) => {
+        document.getElementById('ask-input').value = e.results[0][0].transcript;
+      };
+      rec.start();
+      toast('Слушаю…');
+    };
+  }
+
+  document.querySelectorAll('[data-nav]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const v = el.getAttribute('data-nav');
+      if (v === 'learn') { currentLesson = null; renderLearnList(); }
+      if (v === 'practice') { currentScenario = null; renderPracticeList(); }
+      navigate(v);
+    });
+  });
+
+  document.getElementById('ask-submit').onclick = submitAsk;
+  document.getElementById('ask-input').onkeydown = (e) => { if (e.key === 'Enter') submitAsk(); };
+
+  applyA11y();
+  renderAskChips();
+  setupVoice();
+  renderHome();
+})();
+  </script>
+</body>
+</html>
